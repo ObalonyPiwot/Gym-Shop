@@ -1,17 +1,17 @@
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 
-const Promocje = () => {
+const Nowosci = () => {
 
     return ( 
         <div>
          <Navbar/>
          <Sidebar/>
          <div className='content'> 
-            Promocje
+            Nowosci
          </div>
       </div>
      );
  }
  
- export default Promocje;
+ export default Nowosci;

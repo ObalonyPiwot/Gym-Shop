@@ -1,9 +1,16 @@
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+
 const Koszyk = () => {
 
     return ( 
-        <div className="home">
-         Koszyk
-        </div>
+        <div>
+         <Navbar/>
+         <Sidebar/>
+         <div className='content'> 
+            Koszyk
+         </div>
+      </div>
      );
  }
  

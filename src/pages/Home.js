@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import BlogList from '../BlogList'
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 const Home = () => {
 
@@ -10,10 +12,14 @@ const Home = () => {
      ]);
 
     return ( 
-        <div className="home">
-           <BlogList blogs ={blogs} title='tytuł'/>
-           <BlogList blogs ={blogs.filter((blog) => blog.author ==='author2')} title='tylko author2'/>
-        </div>
+      <div>
+         <Navbar/>
+         <Sidebar/>
+         <div className='content'> 
+            <BlogList blogs ={blogs} title='tytuł'/>
+            <BlogList blogs ={blogs.filter((blog) => blog.author ==='author2')} title='tylko author2'/>
+         </div>
+      </div>
      );
 }
  
