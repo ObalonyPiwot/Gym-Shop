@@ -16,6 +16,10 @@ const Home = () => {
          <Navbar/>
          <Sidebar/>
          <div className='content'> 
+            <button onClick={() => fetch("http://localhost/test")
+                                    .then((response) => response.json())
+                                    .then((data) => console.log(data))
+                                    }>Baza</button>
             <BlogList blogs ={blogs} title='tytuł'/>
             <BlogList blogs ={blogs.filter((blog) => blog.author ==='author2')} title='tylko author2'/>
          </div>
