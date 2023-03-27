@@ -21,7 +21,7 @@ const BlogList = ({blogs, title}) => {
                                 <table>
                                     <tr>
                                         <th> <p className="cena">Cena: {blog.cena}</p></th>
-                                        <th> <button>Dodaj do koszyka</button></th>
+                                        <th className="guzior"> <button>Dodaj do koszyka</button></th>
                                     </tr>
                                     <tr>
                                         <th> <p className="author">Producent: {blog.author}</p></th>
