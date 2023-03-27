@@ -16,7 +16,16 @@ public class Controller {
 
     @GetMapping("/test")
     public String registration() throws SQLException {
-        String sql = "Select login from uzytkownik where ID_uzytkownika = 1";
+        String sql = "Select login from uzytkownik where ID = 1";
+        String data = (String) jdbc.queryForObject(sql, new Object[] { }, String.class);
+        return "{\"Status\":\""+data+"\"}";
+    }
+
+    @GetMapping("/login/{login}/{password}")
+    public String login(@PathVariable("login") String login,@PathVariable("password") String password) throws SQLException {
+        String sql = "Select haslo from uzytkownik where login = "+login;
+        System.out.println(sql);
+        
         String data = (String) jdbc.queryForObject(sql, new Object[] { }, String.class);
         return "{\"Status\":\""+data+"\"}";
     }
