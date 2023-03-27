@@ -11,19 +11,24 @@ const Register = (props) => {
     }
     return ( 
         <>
-        <form onSubmit={handleSubmit}>
-            <label htmlFor='name'>nazwa</label>
-            <input value ={name} onChange = {(e) => setName(e.target.value)} placeholder="name" id='name' name='name'/>
-            <br/>
-            <label htmlFor='login'>login</label>
-            <input value ={login} onChange = {(e) => setLogin(e.target.value)} type = "login" placeholder="login@gmail.com" id='login' name='login'/>
-            <br/>
-            <label htmlFor='password'>password</label>
-            <input value ={password} onChange = {(e) => setPassword(e.target.value)} type = "password" placeholder="******" id='password' name='password'/>
-            <br/>
-            <button type ='submit'>Zaloguj</button>
-        </form>
-        <button onClick={() => props.onFormSwitch('login')}>Posiadasz już konto? Zaloguj sie tutaj!</button>
+         <div className='content2'>
+            <div className='logging'>
+            <h2>Rejestracja</h2>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor='name'>Nazwa użytkownika</label>
+                    <input value ={name} onChange = {(e) => setName(e.target.value)} placeholder="login" id='name' name='name'/>
+                    <br/>
+                    <label htmlFor='login'>Adres e-mail</label>
+                    <input value ={login} onChange = {(e) => setLogin(e.target.value)} type = "login" placeholder="przykladowy@mail.com" id='login' name='login'/>
+                    <br/>
+                    <label htmlFor='password'>Hasło</label>
+                    <input value ={password} onChange = {(e) => setPassword(e.target.value)} type = "password" placeholder="******" id='password' name='password'/>
+                    <br/>
+                    <button type ='submit'>Zarejestruj</button>
+                </form>
+                <button onClick={() => props.onFormSwitch('login')}>Posiadasz już konto? Zaloguj sie tutaj!</button>
+        </div>
+        </div>
         </>
      );
  }
