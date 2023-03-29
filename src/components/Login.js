@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import logo from "../assets/googleIcon.png";
 
 const Login = (props) => {
     const[login, setLogin] = useState("");
@@ -23,9 +24,13 @@ const Login = (props) => {
                 <label htmlFor='password'>Hasło</label>
                 <input value ={password} onChange = {(e) => setPassword(e.target.value)} type = "password" placeholder="******" id='password' name='password'/>
                 <br/>
-                <button type ='submit'>Zaloguj</button>
+                <div className='guziki'>
+                    <button classname="guzikLogin" type ='submit'>Zaloguj</button>
+                    <button className="guzikGoogle" type ='submit'><img  src={logo} alt="GYMBUDDY Logo" /></button>
+                </div>
             </form>
             <button onClick={() => props.onFormSwitch('register')}>Nie posiadasz jeszcze konta? Zarejestruj sie tutaj!</button>
+            <button onClick={() => props.onLoggedSwitch('true')}>Test</button>
             </div>
         </div>
         </>

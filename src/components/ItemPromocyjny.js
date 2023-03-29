@@ -1,4 +1,4 @@
-const BlogList = ({blogs, title}) => {
+const ItemPromocyjny = ({blogs, title}) => {
     return (
 
         <div className="blogList">
@@ -26,7 +26,7 @@ const BlogList = ({blogs, title}) => {
                                 <div class="bottom">
                                     <table>
                                         <tr>
-                                            <th> <p className="cena">Cena: {blog.cena}</p></th>
+                                            <th> <p className="cena" >Cena: {blog.cena} </p><p className="cena2">{blog.cena2}</p></th>
                                         </tr>
                                         <tr>
                                             <th className="guzior"> <button>Dodaj do koszyka</button></th>
@@ -45,4 +45,4 @@ const BlogList = ({blogs, title}) => {
     );
 }
 
-export default BlogList;
+export default ItemPromocyjny;
