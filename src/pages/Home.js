@@ -2,6 +2,7 @@ import { useState } from 'react'
 import BlogList from '../components/BlogList'
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import PreviewBlog from '../components/PreviewBlog';
 
 const Home = () => {
 
@@ -20,14 +21,29 @@ const Home = () => {
       {photo: "./4.png", title: 'Stojak na gryfy', cena:"78.99 zł", body: 'X', author: 'JUST7GYM', id: 4},
       {photo: "./5.png", title: 'SQUAT BAR', cena:"949.99 zł", body: 'X', author: 'JUST7GYM', id: 5},
      ]);
+     const [data, setData] = useState('');
+     const childToParent = (childData) => {
+      setData(childData);
 
+     }
+     
+
+   console.log(data);
+   let okno;
+   if(data){
+      okno = <PreviewBlog item={data} childToParent={childToParent}/>
+   } else {
+      okno = <></>;
+   }
     return ( 
       <div>
+         {okno}
          <Navbar/>
          <Sidebar/>
+
          <div className='content'>  
             {/* <BlogList blogs ={blogs} title='Suplementy'/> */}
-            <BlogList blogs ={blogs.filter((blog) => blog.author ==='KFD')} title='Suplementy'/>
+            <BlogList blogs ={blogs.filter((blog) => blog.author ==='KFD')} title='Suplementy' childToParent={childToParent}/>
             <BlogList blogs ={blogs.filter((blog) => blog.author ==='JUST7GYM')} title='Sprzęt'/>
             <BlogList blogs ={blogs.filter((blog) => blog.id === 1 )} title='Akcesoria'/>
          </div>
