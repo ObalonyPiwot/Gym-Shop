@@ -12,7 +12,7 @@ const Koszyk = () => {
        ]);
 
     let totalCena = blogs.reduce((total, blog) => {
-        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.')));
+        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.')))*blog.count;
     }, 0).toFixed(2);
     let spendCena = 9.99;
     let result = parseFloat(totalCena) + parseFloat(spendCena);
