@@ -7,15 +7,22 @@ import '../cart.css';
 const Koszyk = () => {
 
     const[blogs, setBlogs] = useState([
-        {photo: "./6.png", title: 'Erytrytol 1000G', cena:"9.99 zł", body: 'X', author: 'KFD', id: 6},
-        {photo: "./7.png", title: 'Delicates kisiel na zimno 259G', cena:"19.99 zł", body: 'X', author: 'KFD', id: 7},
+        {photo: "./6.png", title: 'Erytrytol 1000G', cena:"9.99 zł", body: 'X', author: 'KFD', id: 6, count: 2},
+        {photo: "./7.png", title: 'Delicates kisiel na zimno 259G', cena:"19.99 zł", body: 'X', author: 'KFD', id: 7, count: 1},
        ]);
 
-    const totalCena = blogs.reduce((total, blog) => {
-        return total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.'));
+    let totalCena = blogs.reduce((total, blog) => {
+        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.')));
     }, 0).toFixed(2);
     let spendCena = 9.99;
-    const result = parseFloat(totalCena) + parseFloat(spendCena);
+    let result = parseFloat(totalCena) + parseFloat(spendCena);
+
+    const handleBlogs = (newBlogs) => {
+        setBlogs(newBlogs);
+        console.log(blogs);
+      };
+
+    
 
     return ( 
         <div>
@@ -28,7 +35,7 @@ const Koszyk = () => {
                         <h2>KOSZYK</h2>
                     </div>
                     <div className='list'>
-                        <CartList   blogs={blogs.filter((blog) => blog.author ==='KFD')} />
+                        <CartList   blogs={blogs.filter((blog) => blog.author ==='KFD')} handleBlogs={handleBlogs} />
                     </div>
                 </div>
             </div>
