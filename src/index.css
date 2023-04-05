@@ -398,40 +398,44 @@ html{
   /* background-color: rgba(20, 20, 20, 0.4); */
   background-color: red;
   color: white;
-  width: 70%;
-  height: 80%;
   background-color: #2c2c2c;
   border: 1px solid #ffffff;
   border-radius: 5px;
+  display: flex;
 }
 
 .content3 .zdjecie{
   /* background-color: red; */
   display: flex;
-  width: 30%;
-  height: 65%;
-  width: 40%;
+  height: 30em;
+  width: 20em;
   float: left;
   justify-content: center;
   align-items: center;
+  flex-grow: 2;
 }
+
+.content3 > .previewContent{
+  width: 30em;
+  flex-grow: 4;
+}
+
 
 .content3 .tekst{
   display: flex;
   /* background-color: blue; */
-  width: 60%;
-  height: 10%;
-  float: left;
-  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  justify-content: space-between;
 }
 .content3 .tekst2{
   /* display: flex; */
   /* background-color: rgb(251, 255, 0); */
+  padding-top: 1em;
   width: 60%;
   height: 55%;
   float: left;
 }
-
 
 .content3 .tekst h2{
   color: #be9e44;
@@ -447,18 +451,17 @@ html{
   color: white;
 }
 .content3 .tekst2 p{
-  font-size: 35px;
+  font-size: 25px;
 }
 .content3 .tekst2 .idProd{
   font-size: 15px;
   color: gray;
 }
 
-.content3 .opis{
+.content3 .previewContentDesc{
   /* background-color: green; */
   /* display: flex; */
-  clear: both;
-  height: 35%
+  font-size: small !important;
 }
 
 .content3 .opis p{
@@ -479,19 +482,15 @@ html{
 }
 
 .content3 .zamkniecie{
-  /* right: -460px; */
   cursor: pointer;
-  margin-left: 35vw;
-  position: absolute;
-  right: 15%;
-  height: 50%;
 }
-.content3 .zamkniecie img{
-  height: 5%;
+.content3 .zamkniecie img{ 
+  height: 2em;
 }
 
 .content3 .guzior2{
   text-align: center;
+  right: auto;
   padding-top: 25%
 }
 
@@ -502,9 +501,8 @@ html{
   color: #be9e44;
   font-weight: bold;
   font-size: 20px;
-  border-radius: 15px;
   /* width: 14em; */
-  width: 50%;
+  width: 14em;
   transition: background-color 0.3s ease-out 50ms;
   transition: font-weight 0.3s ease-out 50ms;
   transition: color 0.3s ease-out 50ms;
