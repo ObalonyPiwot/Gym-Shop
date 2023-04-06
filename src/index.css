@@ -26,6 +26,7 @@ html{
 }
 .navbar .links {
   margin-left: auto;
+  z-index: 0;
 }
 .navbar a {
   padding-left: 16px;
@@ -77,6 +78,22 @@ html{
   pointer-events: none;
   background-color: #000000 !important;
   
+}
+
+.cartItems{
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 100%;
+  border: #be9e44 3px solid;
+  position: relative;
+  left: -24em;
+  top: 1.5em;
+  z-index: 2;
+}
+.cartItems p{
+  font-size: medium;
+  color: #be9e44;
+  text-align: center;
 }
 
 .content {
@@ -133,7 +150,7 @@ html{
   width: 10em;
   /* background: rgba(0, 0, 0, 0); */
   /* background: red; */
-  border-radius: 15px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -214,7 +231,7 @@ html{
   color: #be9e44;
   font-weight: bold;
   font-size: 15px;
-  border-radius: 15px;
+  border-radius: 5px;
   width: 14em;
   transition: background-color 0.3s ease-out 50ms;
   transition: font-weight 0.3s ease-out 50ms;

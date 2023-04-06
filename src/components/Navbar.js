@@ -19,6 +19,9 @@ const Navbar = () => {
                 <a href="/Nowosci">Nowości</a>
                 <a href="/Konto">Konto</a>
             </div>
+            <div className="cartItems">
+                <p> 2</p>
+            </div>
         </nav>
      );
 }
