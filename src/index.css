@@ -28,11 +28,12 @@ html{
   margin-left: auto;
   z-index: 0;
 }
+
 .navbar a {
   padding-left: 16px;
   background-color: #000000 !important;
   text-decoration: none;
-  padding: 6px;
+  /* padding: 6px; */
   font-size: 30px;
   /* color: white; */
   color: rgb(187, 187, 187);
@@ -81,18 +82,20 @@ html{
 }
 
 .cartItems{
-  width: 1.2em;
-  height: 1.2em;
+  width: 1.1em;
+  height: 1.1em;
   border-radius: 100%;
   border: #be9e44 3px solid;
+  background-color: #be9e44;
   position: relative;
-  left: -24em;
-  top: 1.5em;
+  left: -24.5em;
+  top: -0.75em;
   z-index: 2;
 }
 .cartItems p{
-  font-size: medium;
-  color: #be9e44;
+  font-size: 13px;
+  font-weight: 900;
+  color: rgb(50, 48, 48);
   text-align: center;
 }
 
