@@ -1,7 +1,30 @@
 import exit from "../assets/exit.png";
-
+import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 function PreviewBlog({ item, childToParent }) {
+    const [sessionData, setSessionData] = useState({});
+    const [cookies] = useCookies(['SESSION']);
+
+    function test()
+    {
+        const fetchSessionData = async () => {
+            try {
+              const response = await fetch('http://localhost/session', {
+                headers: { 'X-Auth-Token': cookies.SESSION }
+              });
+              const data = await response.json();
+              console.log(data);
+              setSessionData(data);
+            } catch (error) {
+              console.log(error);
+            }
+          };
+      
+          // Wywołaj funkcję pobierającą dane sesji
+          fetchSessionData();
+    }
     console.log(item);
     const photo = item.photo;
     let src = require(`${photo}`);
@@ -30,7 +53,7 @@ function PreviewBlog({ item, childToParent }) {
                         <p className="previewContentDesc">{item.body}</p>
                         <div className="guzior2">
                             {/* <input type="number" className="quantity" min="1" max="99" defaultValue={"1"}/> */}
-                            <button className="doKoszyka">Do koszyka</button>
+                            <button className="doKoszyka" onClick={test}>Do koszyka</button>
                         </div>
                         
                     </div>
