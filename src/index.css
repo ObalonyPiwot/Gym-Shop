@@ -514,6 +514,17 @@ html{
   padding-top: 25%
 }
 
+.guzior2_PreviewBlog{
+  width: fit-content;
+  gap: 15px;
+}
+.guzior2Counter{
+  width: max-content;
+  display: flex;
+  gap: 15px;
+  padding-bottom: 15px;
+}
+
 .content3 button{
   padding: 10px 20px;
   background-color: #1d1d1d;

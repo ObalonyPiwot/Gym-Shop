@@ -19,7 +19,6 @@ const Koszyk = () => {
 
     const handleBlogs = (newBlogs) => {
         setBlogs(newBlogs);
-        console.log(blogs);
       };
 
     

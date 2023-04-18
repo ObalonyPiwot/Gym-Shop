@@ -1,6 +1,7 @@
 package pl.gymshopspring;
 
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ public class Controller {
 
     @Autowired
     private SessionRepository sessionRepository;
+    @Autowired
+    private SessionData mySessionData;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -69,5 +72,16 @@ public class Controller {
         sessionData.put("username", data);
         sessionData.put("isLoggedIn", session.getAttribute("isLoggedIn"));
         return ResponseEntity.ok(sessionData);
+    }
+
+    //HOME - ZAMOWIENIE
+    @PostMapping ("/Cart/AddToCart")
+    public void addItems(@RequestBody String item)
+    {
+        JSONObject json = new JSONObject(item);
+        System.out.println(json);
+        mySessionData.setSessionData("Produkt", json.getString("title"));
+        System.out.println(mySessionData.getSessionData());
+
     }
 }
