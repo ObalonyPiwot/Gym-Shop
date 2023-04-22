@@ -1,11 +1,14 @@
 package pl.gymshopspring;
 
-import jakarta.annotation.PostConstruct;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.servlet.http.HttpSessionBindingEvent;
+import jakarta.servlet.http.HttpSessionBindingListener;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -13,15 +16,25 @@ import java.util.HashMap;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionObjetcs implements Serializable {
 
-    private transient HashMap<String, JSONObject> sessionData = new HashMap<>();
+public class SessionData implements HttpSessionBindingListener, Serializable {
+    private transient  HashMap<String, String> data = new HashMap<>();
 
-    public HashMap getData()
-    {
-        return  sessionData;
+    public void setData(String key, String value) {
+        data.put(key, value);
     }
-    public void setSessionData(String key, JSONObject value) {
-        this.sessionData.put(key, value);
+
+    public HashMap<String, String> getData() {
+        return data;
+    }
+
+    @Override
+    public void valueBound(HttpSessionBindingEvent event) {
+        // Powiadomienie o dodaniu obiektu do sesji
+    }
+
+    @Override
+    public void valueUnbound(HttpSessionBindingEvent event) {
+        // Powiadomienie o usunięciu obiektu z sesji
     }
 }

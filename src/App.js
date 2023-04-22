@@ -7,9 +7,31 @@ import Home from './pages/Home'
 import Koszyk from './pages/Koszyk'
 import Promocje from './pages/Promocje'
 import Nowosci from './pages/Nowosci'
+import { useState, useEffect } from 'react';
+import { getCookie, setCookie } from './HelperFunction';
 
 
 function App() {
+
+  const [sessionId, setSessionId] = useState("");
+
+  useEffect(() => {
+    const sessionCookie = getCookie("SESSION-ID");
+    if (sessionCookie) {
+      setSessionId(sessionCookie);
+      console.log(sessionCookie);
+      console.log("ISTNIEJE");
+    } else {
+      console.log("WYKONANO");
+      // Jeśli nie ma ciasteczka z identyfikatorem sesji, wykonaj żądanie do serwera
+      fetch("http://localhost/api/getSessionID")
+        .then((response) => response.text())
+        .then((data) => {
+          setSessionId(data);
+          setCookie("SESSION-ID", data, 1); // Zapisz identyfikator sesji w ciasteczku
+        });
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -23,5 +45,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;

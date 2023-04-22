@@ -1,17 +1,17 @@
 package pl.gymshopspring;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +22,8 @@ public class Controller {
     @Autowired
     private SessionRepository sessionRepository;
     @Autowired
-    private SessionData mySessionData;
+    private RedisTemplate<String, SessionData> redisTemplate;
+
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -75,13 +76,37 @@ public class Controller {
     }
 
     //HOME - ZAMOWIENIE
-    @PostMapping ("/Cart/AddToCart")
-    public void addItems(@RequestBody String item)
-    {
+    @PostMapping("/Cart/setRedisData")
+    @ResponseBody
+    public String setDataInSession(@RequestBody String item,HttpServletRequest request) {
         JSONObject json = new JSONObject(item);
-        System.out.println(json);
-        mySessionData.setSessionData("Produkt", json.getString("title"));
-        System.out.println(mySessionData.getSessionData());
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        if (sessionData == null) {
+            sessionData = new SessionData();
+        }
+        sessionData.setData(json.getString("title"), json.toString());
+        redisTemplate.opsForValue().set(sessionId, sessionData);
+        return "Data set in session";
+    }
 
+
+    //NAVBAR - KOSZYK
+    @GetMapping("/getDataFromSession")
+    @ResponseBody
+    public String getDataFromSession(HttpServletRequest request) {
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        if (sessionData != null) {
+            return sessionData.getData().toString();
+        } else {
+            return "Session not found";
+        }
+    }
+
+
+    @GetMapping("/api/getSessionID")
+    public String getSessionId(HttpServletRequest request) {
+        return request.getSession().getId();
     }
 }

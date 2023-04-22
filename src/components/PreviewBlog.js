@@ -1,9 +1,9 @@
 import exit from "../assets/exit.png";
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { getCookie } from "../HelperFunction";
 
 function PreviewBlog({ item, childToParent }) {
-    const [sessionData, setSessionData] = useState({});
     const [cookies] = useCookies(['SESSION']);
 
     const [count, setCount] = useState(item.count);
@@ -20,9 +20,11 @@ function PreviewBlog({ item, childToParent }) {
 
     function test() {
         let validateData = JSON.stringify(item);
-        fetch('http://localhost/Cart/AddToCart', {
+        const sessionCookie = getCookie("SESSION-ID");
+        fetch('http://localhost/Cart/setRedisData', {
             method: 'POST',
             headers: {
+                'SESSIONID': sessionCookie,
                 'Content-Type': 'application/json'
             },
             body: validateData
@@ -30,22 +32,21 @@ function PreviewBlog({ item, childToParent }) {
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
+    }
 
-        // const fetchSessionData = async () => {
-        //     try {
-        //       const response = await fetch('http://localhost/session', {
-        //         headers: { 'X-Auth-Token': cookies.SESSION }
-        //       });
-        //       const data = await response.json();
-        //       console.log(data);
-        //       setSessionData(data);
-        //     } catch (error) {
-        //       console.log(error);
-        //     }
-        //   };
+    function get() {
+        const sessionCookie = getCookie("SESSION-ID");
+        fetch('http://localhost/getDataFromSession', {
+            method: 'GET',
+            headers: {
+                'SESSIONID': sessionCookie,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
 
-        //   // Wywołaj funkcję pobierającą dane sesji
-        //   fetchSessionData();
     }
 
     let src = require(`${item.photo}`);
@@ -86,6 +87,7 @@ function PreviewBlog({ item, childToParent }) {
 
                             </div>
                             <button className="doKoszyka" onClick={test}>Do koszyka</button>
+                            <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button>
 
                         </div>
 
@@ -98,4 +100,3 @@ function PreviewBlog({ item, childToParent }) {
 }
 
 export default PreviewBlog;
-

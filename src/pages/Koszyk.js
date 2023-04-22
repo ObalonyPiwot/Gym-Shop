@@ -1,15 +1,46 @@
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import CartList from '../components/CartList';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getCookie } from "../HelperFunction";
 import '../cart.css';
 
 const Koszyk = () => {
 
-    const[blogs, setBlogs] = useState([
-        {photo: "./6.png", title: 'Erytrytol 1000G', cena:"9.99 zł", body: 'X', author: 'KFD', id: 6, count: 2},
-        {photo: "./7.png", title: 'Delicates kisiel na zimno 259G', cena:"19.99 zł", body: 'X', author: 'KFD', id: 7, count: 1},
-       ]);
+    const [blogs, setBlogs] = useState([]);
+    
+
+
+    useEffect(() => {
+
+        const sessionCookie = getCookie("SESSION-ID");
+        fetch('http://localhost/getDataFromSession', {
+            method: 'GET',
+            headers: {
+                'SESSIONID': sessionCookie,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.text())
+            .catch(error => console.log('error', error))
+            .then(result => {
+                const correctedString = result.replace(/([a-zA-Z0-9_\s]+)\s*=/g, '"$1": ')
+                    .replace(/(['"])?([a-zA-Z0-9_\s]+)(['"])?:/g, '"$2": ')
+                    .replace(/'/g, '"');
+                const json = JSON.parse(correctedString);
+                const transformed = Object.entries(json).map(([key, value]) => ({
+                    photo: value.photo,
+                    title: value.title,
+                    cena: value.cena,
+                    body: value.body,
+                    author: value.author,
+                    id: value.id,
+                    count: parseInt(value.count, 10)
+                  }));
+                  setBlogs(transformed);
+            });
+
+    }, []);
 
     let totalCena = blogs.reduce((total, blog) => {
         return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.')))*blog.count;
@@ -41,7 +72,7 @@ const Koszyk = () => {
             <div className='paying'>
                 <div className='payingMainDivPrice'>
                     <div className='payingDivPrice'>
-                        <h2>{blogs.length} szt.</h2>
+                        <h2>{blogs.reduce((acc, curr) => acc + curr.count, 0)} szt.</h2>
                         <h2> {totalCena} zł</h2>
                     </div>
                     <div className='payingDivPrice'>

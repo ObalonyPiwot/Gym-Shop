@@ -25,7 +25,6 @@ const Home = () => {
      const childToParent = (childData) => {
       setData(childData);
      }
-   console.log("RESET");
    let okno;
    if(data){
       okno = <PreviewBlog item={data} childToParent={childToParent}/>
