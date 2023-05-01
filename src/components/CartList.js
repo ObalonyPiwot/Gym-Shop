@@ -23,7 +23,7 @@ const CartList = ({ blogs, handleBlogs }) => {
                 const photo = blog.photo;
                 let src = require(`${photo}`);
                 const currentCount = count[index];
-                const currentPrice = parseFloat(blog.cena).toFixed(2) * currentCount;
+                const currentPrice = parseFloat(blog.cena).toFixed(2) * blog.count;
 
                 return (
                     <div className='CartPreview' key={blog.id}>

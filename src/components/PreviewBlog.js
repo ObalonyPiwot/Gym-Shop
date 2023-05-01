@@ -87,7 +87,7 @@ function PreviewBlog({ item, childToParent }) {
 
                             </div>
                             <button className="doKoszyka" onClick={test}>Do koszyka</button>
-                            <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button>
+                            {/* <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button> */}
 
                         </div>
 
