@@ -36,14 +36,26 @@ public class Controller {
         return "{\"Status\":\""+data+"\"}";
     }
 
-    @GetMapping("/login/{login}/{password}")
-    public String login(@PathVariable("login") String login,@PathVariable("password") String password) throws SQLException {
-        String sql = "Select haslo from uzytkownik where login = '" + login + "'";
+    @GetMapping("/login/{email}/{password}")
+    public String login(@PathVariable("email") String email,@PathVariable("password") String password) throws SQLException {
+        String sql = "Select haslo from uzytkownik where email = '" + email + "'";
+        System.out.println(email);
+        System.out.println(password);
         System.out.println(sql);
-
         try {
-            String data = (String) jdbc.queryForObject(sql, new Object[]{}, String.class);
-            return "{\"Status\":\"" + data + "\"}";
+            String pass = jdbc.queryForObject(sql, new Object[]{}, String.class);
+            System.out.println(pass);
+            if(pass.equals(password)) {
+                String sqlGetUser = "Select * from uzytkownik where email = '" + email + "'";
+                Uzytkownik uzytkownik = jdbc.queryForObject(sqlGetUser, new Uzytkownik[]{}, (rs, rowNum) -> {
+                    Uzytkownik u = new Uzytkownik(rs);
+                    return u;
+                });
+                System.out.println(uzytkownik.toString());
+                System.out.println("{\"Status\":\"success\",\"User\":"+uzytkownik.toJSON()+"}");
+                return "{\"Status\":\"success\",\"User\":"+uzytkownik.toJSON()+"}";
+            }
+            else return "{\"Status\":\"error\",\"Message\":\"Wrong password\"}";
         } catch (EmptyResultDataAccessException e) {
             return "{\"Status\":\"error\",\"Message\":\"User not found\"}";
         } catch (Exception e) {
@@ -51,15 +63,25 @@ public class Controller {
         }
     }
 
-    @GetMapping("/register/{login}/{password}/{email}/{imie}/{nazwisko}/{telefon}")
-    public String login(@PathVariable("login") String login,@PathVariable("password") String password,
+    @GetMapping("/register/{password}/{email}/{imie}/{nazwisko}/{telefon}")
+    public String login(@PathVariable("password") String password,
                         @PathVariable("email") String email,@PathVariable("imie") String imie,
                         @PathVariable("nazwisko") String nazwisko,@PathVariable("telefon") String telefon) throws SQLException {
-        String sql = "INSERT INTO uzytkownik VALUES(UzytkownikID.nextVal, '"+imie+"','"+nazwisko+"','Klient','"+login+"','"+password+"','"+email+"', '"+telefon+"')" ;
+        String sql = "INSERT INTO uzytkownik VALUES(UzytkownikID.nextVal, '"+imie+"','"+nazwisko+"','Klient','"+password+"','"+email+"', '"+telefon+"')" ;
         System.out.println(sql);
-
-        jdbc.update(sql);
-        return "{\"Status\":\"registered\"}";
+        String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
+        System.out.println(sqlCheck);
+        try {
+            jdbc.queryForObject(sqlCheck, Integer.class);
+            return "{\"Status\":\"exists\"}";
+        } catch (Exception e) {
+            try {
+                int data = jdbc.update(sql);
+                return "{\"Status\":\"success\"}";
+            } catch (Exception ex) {
+                return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+            }
+        }
     }
 
     @GetMapping("/session")

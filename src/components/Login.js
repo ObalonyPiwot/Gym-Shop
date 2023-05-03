@@ -6,15 +6,19 @@ import { useGoogleLogin } from '@react-oauth/google';
 const Login = (props) => {
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
-    const [user, setUser] = useState(null);
 //login zwykly
     const handleSubmit = (e) =>{
         fetch("http://localhost/login/"+email+"/"+password)
-            .then((response) => response.json())
-            .then((data) => console.log(data))
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.Status === 'success') {
+                props.onLoggedSwitch('true');
+                props.setUser(data.User);
+            } else {
+                alert("Błąd logowania");
+            }
+        })
         e.preventDefault();
-        console.log("http://localhost/login/"+email+"/"+password);
-        props.onLoggedSwitch('true');
     }
 //login google
     const login = useGoogleLogin({
@@ -32,6 +36,7 @@ const Login = (props) => {
         },
         onError: (error) => console.log('Login Failed:', error),
     });
+    props.setUser(null);
 
     return ( 
         <>
@@ -40,7 +45,7 @@ const Login = (props) => {
             <h2>Logowanie</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor='email'>Adres e-mail</label>
-                <input value ={email} onChange = {(e) => setEmail(e.target.value)} placeholder="email" id='email' name='email' required/>
+                <input value ={email} onChange = {(e) => setEmail(e.target.value)}  type = "email" placeholder="email" id='email' name='email' required/>
                 <br/>
                 <label htmlFor='password'>Hasło</label>
                 <input value ={password} onChange = {(e) => setPassword(e.target.value)} type = "password" placeholder="******" id='password' name='password' required/>
