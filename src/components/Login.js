@@ -30,9 +30,20 @@ const Login = (props) => {
             },
             })
             .then((response) => response.json())
-            .then((data) => console.log(data))
-            .then(() => props.onLoggedSwitch('true'))
-            .catch((error) => console.log(error));
+            .then((data) => fetch(`http://localhost/googleLogin/${data.email}`)
+                .then((response) => response.json())
+                .then((data2) => {
+                    if (data2.Status === 'success') {
+                        props.onLoggedSwitch('true');
+                        props.setUser(data2.User);
+                    }else if (data2.Status === 'firstTime') {
+                        props.onFirstTimeGoogleLoginSwitch('true');
+                        props.setUser(data);
+                    } else {
+                        alert("Błąd logowania");
+                    }
+                }))
+            .catch((error) => { console.log(error); alert("Błąd logowania") });
         },
         onError: (error) => console.log('Login Failed:', error),
     });

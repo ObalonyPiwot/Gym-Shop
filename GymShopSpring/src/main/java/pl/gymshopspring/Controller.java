@@ -1,5 +1,6 @@
 package pl.gymshopspring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
@@ -39,10 +40,8 @@ public class Controller {
     @GetMapping("/login/{email}/{password}")
     public String login(@PathVariable("email") String email,@PathVariable("password") String password) throws SQLException {
         String sql = "Select haslo from uzytkownik where email = '" + email + "'";
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(sql);
         try {
+            System.out.println(sql);
             String pass = jdbc.queryForObject(sql, new Object[]{}, String.class);
             System.out.println(pass);
             if(pass.equals(password)) {
@@ -51,8 +50,7 @@ public class Controller {
                     Uzytkownik u = new Uzytkownik(rs);
                     return u;
                 });
-                System.out.println(uzytkownik.toString());
-                System.out.println("{\"Status\":\"success\",\"User\":"+uzytkownik.toJSON()+"}");
+                System.out.println(uzytkownik.toJSON());
                 return "{\"Status\":\"success\",\"User\":"+uzytkownik.toJSON()+"}";
             }
             else return "{\"Status\":\"error\",\"Message\":\"Wrong password\"}";
@@ -64,23 +62,47 @@ public class Controller {
     }
 
     @GetMapping("/register/{password}/{email}/{imie}/{nazwisko}/{telefon}")
-    public String login(@PathVariable("password") String password,
+    public String register(@PathVariable("password") String password,
                         @PathVariable("email") String email,@PathVariable("imie") String imie,
                         @PathVariable("nazwisko") String nazwisko,@PathVariable("telefon") String telefon) throws SQLException {
         String sql = "INSERT INTO uzytkownik VALUES(UzytkownikID.nextVal, '"+imie+"','"+nazwisko+"','Klient','"+password+"','"+email+"', '"+telefon+"')" ;
-        System.out.println(sql);
         String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
-        System.out.println(sqlCheck);
         try {
+            System.out.println(sqlCheck);
             jdbc.queryForObject(sqlCheck, Integer.class);
             return "{\"Status\":\"exists\"}";
         } catch (Exception e) {
             try {
-                int data = jdbc.update(sql);
+                System.out.println(sql);
+                jdbc.update(sql);
                 return "{\"Status\":\"success\"}";
             } catch (Exception ex) {
                 return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
             }
+        }
+    }
+
+    @GetMapping("/googleLogin/{email}")
+    public String googleLogin(@PathVariable("email") String email) throws SQLException {
+        String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
+        try {
+            System.out.println(sqlCheck);
+            jdbc.queryForObject(sqlCheck, Integer.class);
+            String sqlGetUser = "Select * from uzytkownik where email = '" + email + "'";
+            Uzytkownik uzytkownik = jdbc.queryForObject(sqlGetUser, new Uzytkownik[]{}, (rs, rowNum) -> {
+                Uzytkownik u = new Uzytkownik(rs);
+                return u;
+            });
+            System.out.println(uzytkownik.toJSON());
+            return "{\"Status\":\"success\",\"User\":" + uzytkownik.toJSON() + "}";
+        } catch (EmptyResultDataAccessException e) {
+            try {
+                return "{\"Status\":\"firstTime\"}";
+            } catch (Exception ex) {
+                return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
