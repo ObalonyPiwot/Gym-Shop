@@ -81,7 +81,19 @@ public class Controller {
             }
         }
     }
-
+    @GetMapping("/updateAccount/{email}/{imie}/{nazwisko}/{telefon}")
+    public String changeAccountData(@PathVariable("email") String email,@PathVariable("imie") String imie,
+                           @PathVariable("nazwisko") String nazwisko,@PathVariable("telefon") String telefon) throws SQLException {
+        String sql = "UPDATE uzytkownik SET imie = '" + imie + "', nazwisko = '" + nazwisko +
+                "',telefon = '" + telefon + "' WHERE Email = '" + email + "'";
+        try {
+            System.out.println(sql);
+            jdbc.update(sql);
+            return "{\"Status\":\"success\"}";
+        } catch (Exception e) {
+                return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
     @GetMapping("/googleLogin/{email}")
     public String googleLogin(@PathVariable("email") String email) throws SQLException {
         String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
