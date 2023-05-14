@@ -32,25 +32,24 @@ public class Controller {
     @GetMapping("/test")
     public String registration() throws SQLException {
         String sql = "Select login from uzytkownik where ID = 1";
-        String data = (String) jdbc.queryForObject(sql, new Object[] { }, String.class);
+        String data = (String) jdbc.queryForObject(sql, new Object[]{}, String.class);
         System.out.println("Wykonano");
-        return "{\"Status\":\""+data+"\"}";
+        return "{\"Status\":\"" + data + "\"}";
     }
 
     @GetMapping("/login/{email}/{password}")
-    public String login(@PathVariable("email") String email,@PathVariable("password") String password) throws SQLException {
+    public String login(@PathVariable("email") String email, @PathVariable("password") String password) throws SQLException {
         String sql = "Select haslo from uzytkownik where email = '" + email + "'";
         try {
             String pass = jdbc.queryForObject(sql, new Object[]{}, String.class);
-            if(pass.equals(password)) {
+            if (pass.equals(password)) {
                 String sqlGetUser = "Select * from uzytkownik where email = '" + email + "'";
                 Uzytkownik uzytkownik = jdbc.queryForObject(sqlGetUser, new Uzytkownik[]{}, (rs, rowNum) -> {
                     Uzytkownik u = new Uzytkownik(rs);
                     return u;
                 });
-                return "{\"Status\":\"success\",\"User\":"+uzytkownik.toJSON()+"}";
-            }
-            else return "{\"Status\":\"error\",\"Message\":\"Wrong password\"}";
+                return "{\"Status\":\"success\",\"User\":" + uzytkownik.toJSON() + "}";
+            } else return "{\"Status\":\"error\",\"Message\":\"Wrong password\"}";
         } catch (EmptyResultDataAccessException e) {
             return "{\"Status\":\"error\",\"Message\":\"User not found\"}";
         } catch (Exception e) {
@@ -60,9 +59,9 @@ public class Controller {
 
     @GetMapping("/register/{password}/{email}/{imie}/{nazwisko}/{telefon}")
     public String register(@PathVariable("password") String password,
-                        @PathVariable("email") String email,@PathVariable("imie") String imie,
-                        @PathVariable("nazwisko") String nazwisko,@PathVariable("telefon") String telefon) throws SQLException {
-        String sql = "INSERT INTO uzytkownik VALUES(UzytkownikID.nextVal, '"+imie+"','"+nazwisko+"','Klient','"+password+"','"+email+"', '"+telefon+"')" ;
+                           @PathVariable("email") String email, @PathVariable("imie") String imie,
+                           @PathVariable("nazwisko") String nazwisko, @PathVariable("telefon") String telefon) throws SQLException {
+        String sql = "INSERT INTO uzytkownik VALUES(UzytkownikID.nextVal, '" + imie + "','" + nazwisko + "','Klient','" + password + "','" + email + "', '" + telefon + "')";
         String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
         try {
             jdbc.queryForObject(sqlCheck, Integer.class);
@@ -101,7 +100,7 @@ public class Controller {
 
     @PostMapping("/login/setUserToSession")
     @ResponseBody
-    public String setUserSession(@RequestBody String userData,HttpServletRequest request) {
+    public String setUserSession(@RequestBody String userData, HttpServletRequest request) {
         JSONObject json = new JSONObject(userData);
         int idValue = json.getInt("id");
         String idString = String.valueOf(idValue);
@@ -111,7 +110,7 @@ public class Controller {
         if (sessionData == null) {
             sessionData = new SessionData();
         }
-        sessionData.setData("user","id", json.toString());
+        sessionData.setData("user", "id", json.toString());
         redisTemplate.opsForValue().set(sessionId, sessionData);
         return "Data set in session";
     }
@@ -121,7 +120,7 @@ public class Controller {
     public ResponseEntity<Map<String, Object>> getSession(HttpSession session) {
         Map<String, Object> sessionData = new HashMap<>();
         String sql = "Select login from uzytkownik where ID = 1";
-        String data = (String) jdbc.queryForObject(sql, new Object[] { }, String.class);
+        String data = (String) jdbc.queryForObject(sql, new Object[]{}, String.class);
 
         sessionData.put("sessionId", session.getId());
         sessionData.put("username", data);
@@ -132,14 +131,14 @@ public class Controller {
     //HOME - ZAMOWIENIE
     @PostMapping("/Cart/setRedisData")
     @ResponseBody
-    public String setDataInSession(@RequestBody String item,HttpServletRequest request) {
+    public String setDataInSession(@RequestBody String item, HttpServletRequest request) {
         JSONObject json = new JSONObject(item);
         String sessionId = request.getHeader("SESSIONID");
         SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
         if (sessionData == null) {
             sessionData = new SessionData();
         }
-        sessionData.setData("collections",json.getString("title"), json.toString());
+        sessionData.setData("collections", json.getString("title"), json.toString());
         redisTemplate.opsForValue().set(sessionId, sessionData);
         return "Data set in session";
     }
@@ -163,6 +162,5 @@ public class Controller {
     public String getSessionId(HttpServletRequest request) {
         return request.getSession().getId();
     }
-
-
 }
+
