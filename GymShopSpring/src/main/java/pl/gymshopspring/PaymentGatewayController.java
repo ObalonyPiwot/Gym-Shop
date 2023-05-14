@@ -1,9 +1,7 @@
-package pl.gymshopspring.Controllers;
+package pl.gymshopspring;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.gymshopspring.StripeClient;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/api/payment")

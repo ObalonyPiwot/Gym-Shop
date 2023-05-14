@@ -12,37 +12,36 @@ create table uzytkownik(
 
 
 
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Beatrice', 'Forconi', 'Uzytkownik', 'enopa', '2f1cc83c', 'olugok@wulgakug.mv', '(914) 670-3058');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Lora', 'Wong', 'Uzytkownik', 'ukoor', '4c4e2710', 'lu@ka.net', '(501) 767-1266');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Bertha', 'Matthews', 'Uzytkownik', 'esamu', '3095e1ed', 'vuna@akaso.jp', '(541) 614-3797');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Adele', 'Nguyen', 'Admin', 'nedko', '029178ea', 'javihu@rodakci.cn', '(635) 449-9639');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Daisy', 'Owen', 'Uzytkownik', 'amko', '92ccb39b', 'jahuhub@colic.as', '(983) 328-4162');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Lydia', 'Pugliese', 'Uzytkownik', 'hufsaz', '130899d2', 'ibonuw@loz.dk', '(459) 260-7507');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Delia', 'Newman', 'Admin', 'zuwu', '652bc2da', 'itifo@ekukani.ke', '(981) 392-1034');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Blake', 'Magrini', 'Admin', 'jobi', '64c5df27', 'sihvoguv@fu.edu', '(511) 998-1307');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Claudia', 'Arnetoli', 'Uzytkownik', 'zuroj', 'ff9dc740', 'iziodumi@pajtog.tv', '(986) 203-1486');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Carolyn', 'Moya', 'Admin', 'mehe', '200a60eb', 'fatud@silozos.mg', '(321) 787-8414');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Roy', 'Goodman', 'Uzytkownik', 'jegut', '01833bb5', 'loviste@gupodki.gl', '(780) 902-8790');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Keith', 'Page', 'Uzytkownik', 'zina', '3986221d', 'vim@hek.tp', '(867) 742-1750');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Verna', 'Rey', 'Admin', 'ehohe', '0c9822ea', 'ba@ivzaza.fm', '(331) 228-5197');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Tillie', 'Perini', 'Uzytkownik', 'cairo', '8c9c5ec0', 'erzugoc@mohabo.my', '(850) 413-5491');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Claudia', 'Kennedy', 'Uzytkownik', 'gata', '3b232e7e', 'vibgoezu@sil.ms', '(513) 953-2736');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Ernest', 'Braschi', 'Uzytkownik', 'lohhiw', '63e7684e', 'ritobeb@vegduv.fi', '(579) 458-7469');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Dennis', 'Cox', 'Uzytkownik', 'pulum', '9b2443ae', 'imujda@sej.np', '(682) 816-7196');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'William', 'Guarnieri', 'Uzytkownik', 'degnuc', 'bef429ce', 'neihiuf@wu.kp', '(475) 842-5159');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Olive', 'Cooper', 'Uzytkownik', 'zorvi', '99c19e6d', 'siivoref@amu.bt', '(310) 604-6594');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Amelia', 'Wolfe', 'Uzytkownik', 'votje', 'a99f5348', 'pojebti@ni.gs', '(957) 900-5523');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Jean', 'Nixon', 'Admin', 'kugmid', '838ac680', 'go@vafeknud.sh', '(846) 614-9042');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Brandon', 'Goretti', 'Uzytkownik', 'hehim', '43d33afe', 'gar@bizsu.bw', '(607) 647-7001');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Violet', 'Tacconi', 'Admin', 'petiv', 'ebf892aa', 'la@cir.gov', '(773) 659-1284');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Cole', 'Carroll', 'Uzytkownik', 'niro', 'c821aa39', 'ekegiv@wuojiafe.qa', '(531) 979-3308');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Marcus', 'Facchini', 'Admin', 'nemde', '7808c68b', 'lu@ez.ar', '(453) 384-3522');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Gerald', 'Cohen', 'Uzytkownik', 'vias', 'f9204c08', 'es@gaf.dk', '(841) 344-8523');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Miguel', 'Cencetti', 'Uzytkownik', 'tussen', '7abf0673', 'toorneh@liw.al', '(533) 911-1755');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Maude', 'Betti', 'Uzytkownik', 'vepjoc', 'cb10e997', 'notgenfaz@mi.gl', '(708) 776-4260');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Fanny', 'Boulanger', 'Admin', 'evekat', '8d53cf4a', 'zettirul@dad.ar', '(216) 351-3872');
-INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Nelle', 'Williams', 'Uzytkownik', 'midir', '63f59812', 'lagiboli@ogunodaw.id', '(354) 495-6281');
-
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Logan', 'Carta', 'Uzytkownik', '6ffcfcc7', 'nuebi@titunir.kp', '155038985');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Adrian', 'Baumann', 'Uzytkownik', '6ba02e24', 'ebised@cad.dk', '738515190');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Hannah', 'Martino', 'Admin', '41813e38', 'fule@remucle.zw', '776828366');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Cecelia', 'Vaughn', 'Uzytkownik', 'b76dcec1', 'vubebuiw@litlo.us', '819694531');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Eleanor', 'Puliti', 'Admin', '7b0ca2df', 'ilbi@gina.bf', '253193174');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Loretta', 'Ceseri', 'Uzytkownik', '1c3bf89f', 'kehnun@sazav.so', '516898953');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Eugenia', 'Romani', 'Uzytkownik', '4a0cee75', 'je@mowak.cw', '500135256');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Kate', 'Cross', 'Uzytkownik', '45c5e117', 'vez@gi.gb', '725938925');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Randall', 'Vaughn', 'Uzytkownik', '4bef96fd', 'ogah@mi.kz', '997693095');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Roy', 'Wheeler', 'Uzytkownik', 'caad4ca8', 'lamuh@lug.at', '206798309');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Nicholas', 'Marchal', 'Uzytkownik', 'cf7299e1', 'vaw@unneba.edu', '841687141');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Miguel', 'Nicolas', 'Uzytkownik', '800f0e00', 'himutga@do.kw', '235629673');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Derrick', 'McDaniel', 'Admin', '27e0d1f1', 'opo@cebtiadu.lt', '199366845');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Joseph', 'Clément', 'Uzytkownik', '0d615c2e', 'jur@fu.tk', '275013110');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Rachel', 'Shah', 'Admin', '4b16469b', 'ipi@ne.aw', '924647396');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Jeffery', 'Webster', 'Uzytkownik', '37c77faf', 'sa@kiguhzo.dj', '647874394');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Fred', 'Hernandez', 'Admin', '8ceedba3', 'hasle@ezrud.am', '453590240');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Lucy', 'Koster', 'Admin', '5fea3564', 'emupa@okco.er', '693187762');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Don', 'Noferini', 'Uzytkownik', 'b50af525', 'kovolge@aj.bm', '141757147');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Floyd', 'Franklin', 'Uzytkownik', '68a7b0c6', 'voic@hoknufek.uz', '380166687');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Cornelia', 'Foster', 'Uzytkownik', '3e9988e8', 'bitjatmem@suvul.lt', '280933801');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'David', 'Chini', 'Admin', 'a5483e83', 'ic@fi.dk', '172975986');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Alice', 'Allen', 'Uzytkownik', '9b8250fd', 'gij@uv.mu', '132905168');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Chris', 'Waters', 'Uzytkownik', '4e9be1f3', 'wujohiv@vahwov.tm', '380272527');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Jerry', 'Calonaci', 'Admin', '54a05f19', 'dorine@vivub.pf', '314531704');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Minerva', 'Harris', 'Admin', '5385a1f2', 'ci@upomi.ie', '934836226');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Sean', 'Boyd', 'Uzytkownik', 'c754856b', 'dibha@jeap.cz', '864393755');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Nina', 'Craig', 'Uzytkownik', '0205672b', 'acalmus@ja.vn', '820250208');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Lou', 'Sabatini', 'Uzytkownik', '5cd8f1e7', 'tuidvaf@ori.gh', '129900658');
+INSERT INTO uzytkownik VALUES (UzytkownikID.nextVal, 'Earl', 'Collins', 'Uzytkownik', 'e52a82f1', 'cuev@tucor.fi', '962323531');
 
 INSERT INTO produkty VALUES ( produktyID.nextVal, 'Białko serwatkowe', 'Joabge re adocizo tocoh juih vima nihiunu ig uwtom mep ido lab. Tucel fu ruvef helpemev gezu sover ohenuwuz efoko tuzcal vefhiz goh ojevehvi nonem nizpife utpesu numbi cakci.', 151.38, 1);
 INSERT INTO produkty VALUES ( produktyID.nextVal, 'Kreatyna', 'Kakzaw cidapavof lopekrab vacam ge agabaej hutfibej tigrag jisni hatsuj bogucve atditgu od hezmujo datuvget. Zov ocbi fewrok mot tafusewe honpefovo hejso fihweg vevhuri tumepvi tor ini kevbut efhegjar.', 241.88, 5);

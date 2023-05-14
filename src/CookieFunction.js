@@ -10,3 +10,19 @@ export function getCookie(name) {
     const expires = "; expires=" + date.toUTCString();
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
+
+ export function checkCookieExists(cookieName) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(cookieName + '=')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  export function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+  

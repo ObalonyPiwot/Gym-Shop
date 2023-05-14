@@ -13,17 +13,17 @@ const ItemPromocyjny = ({blogs, title}) => {
                     let src = require(`${photo}`);
                     return (
                         <div className='blogPreview' key={blog.id}>
-                            <div class="image">
+                            <div className="image">
                                 <img src={src} alt={blog.title} />
                             </div>
-                            <div class="text">
-                                <div class="top">
+                            <div className="text">
+                                <div className="top">
                                     <p>{blog.title}</p>
                                 </div>
-                                {/* <div class="middle">
+                                {/* <div className="middle">
                                     <p>{blog.body}</p>
                                 </div> */}
-                                <div class="bottom">
+                                <div className="bottom">
                                     <table>
                                         <tr>
                                             <th> <p className="cena" >Cena: {blog.cena} </p><p className="cena2">{blog.cena2}</p></th>

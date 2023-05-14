@@ -2,7 +2,7 @@ import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import CartList from './CartList';
 import { useState, useEffect } from 'react'
-import { getCookie } from "../HelperFunction";
+import { getCookie } from "../CookieFunction";
 import Payment from "./Payment";
 import Cart from "./KoszykZawartosc";
 import '../cart.css';
@@ -29,7 +29,7 @@ const KoszykZawartosc = (props) => {
                     .replace(/(['"])?([a-zA-Z0-9_\s]+)(['"])?:/g, '"$2": ')
                     .replace(/'/g, '"');
                 const json = JSON.parse(correctedString);
-                const transformed = Object.entries(json).map(([key, value]) => ({
+                const transformed = Object.entries(json.collections).map(([key, value]) => ({
                     photo: value.photo,
                     title: value.title,
                     cena: value.cena,

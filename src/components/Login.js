@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import logo from "../assets/googleIcon.png";
 import { useGoogleLogin } from '@react-oauth/google';
 
@@ -12,8 +12,9 @@ const Login = (props) => {
         .then((response) => response.json())
         .then((data) => {
             if (data.Status === 'success') {
-                props.onLoggedSwitch('true');
+                props.onLoggedSwitch('true', data.User);
                 props.setUser(data.User);
+
             } else {
                 alert("Błąd logowania");
             }
@@ -34,7 +35,7 @@ const Login = (props) => {
                 .then((response) => response.json())
                 .then((data2) => {
                     if (data2.Status === 'success') {
-                        props.onLoggedSwitch('true');
+                        props.onLoggedSwitch('true', data2.User);
                         props.setUser(data2.User);
                     }else if (data2.Status === 'firstTime') {
                         props.onFirstTimeGoogleLoginSwitch('true');
@@ -67,7 +68,7 @@ const Login = (props) => {
                 </div>
             </form>
             <button onClick={() => props.onFormSwitch('register')}>Nie posiadasz jeszcze konta? Zarejestruj sie tutaj!</button>
-            <button onClick={() => props.onLoggedSwitch('true')}>Test</button>
+            <button onClick={() => props.onLoggedSwitch('true', '')}>Test</button>
             </div>
         </div>
         </>

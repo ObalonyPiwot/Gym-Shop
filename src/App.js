@@ -1,22 +1,16 @@
-
-import Navbar from './components/Navbar';
 import Konto from './pages/Konto';
-import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home'
 import Koszyk from './pages/Koszyk'
 import Promocje from './pages/Promocje'
 import Nowosci from './pages/Nowosci'
-import { useState, useEffect } from 'react';
-import { getCookie, setCookie } from './HelperFunction';
+import { useEffect } from 'react';
 
 
 function App() {
 
-  const [sessionId, setSessionId] = useState("");
-
   useEffect(() => {
-    const sessionCookie = getCookie("SESSION-ID");
+    /*const sessionCookie = getCookie("SESSION-ID");
     if (sessionCookie) {
       setSessionId(sessionCookie);
       console.log(sessionCookie);
@@ -30,7 +24,7 @@ function App() {
           setSessionId(data);
           setCookie("SESSION-ID", data, 1); // Zapisz identyfikator sesji w ciasteczku
         });
-    }
+    }*/
   }, []);
 
   return (

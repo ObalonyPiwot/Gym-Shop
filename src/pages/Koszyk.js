@@ -1,8 +1,4 @@
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
-import CartList from '../components/CartList';
-import { useState, useEffect } from 'react'
-import { getCookie } from "../HelperFunction";
+import { useState } from 'react'
 import Payment from "../components/Payment";
 import Cart from "../components/KoszykZawartosc";
 import '../cart.css';

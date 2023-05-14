@@ -1,10 +1,8 @@
 import exit from "../assets/exit.png";
 import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { getCookie } from "../HelperFunction";
+import { getCookie } from "../CookieFunction";
 
 function PreviewBlog({ item, childToParent }) {
-    const [cookies] = useCookies(['SESSION']);
 
     const [count, setCount] = useState(item.count);
 
@@ -34,21 +32,6 @@ function PreviewBlog({ item, childToParent }) {
             .catch(error => console.log('error', error));
     }
 
-    function get() {
-        const sessionCookie = getCookie("SESSION-ID");
-        fetch('http://localhost/getDataFromSession', {
-            method: 'GET',
-            headers: {
-                'SESSIONID': sessionCookie,
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-
-    }
-
     let src = require(`${item.photo}`);
     return (
         <div className="inspectBlog">
@@ -61,7 +44,7 @@ function PreviewBlog({ item, childToParent }) {
                     <div className='tekst'>
                         <h2>{item.title}</h2>
                         <div className="zamkniecie" onClick={() => childToParent(null)}>
-                            <img src={exit} />
+                            <img src={exit} alt="exit" />
                         </div>
                     </div>
                     <div className="tekst2">

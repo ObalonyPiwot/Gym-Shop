@@ -18,13 +18,15 @@ import java.util.HashMap;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 
 public class SessionData implements HttpSessionBindingListener, Serializable {
-    private transient  HashMap<String, String> data = new HashMap<>();
+    private transient  HashMap<String, HashMap<String, String>> data = new HashMap<>();
 
-    public void setData(String key, String value) {
-        data.put(key, value);
+    public void setData(String key1, String key2, String value ) {
+        HashMap<String, String> userValue = new HashMap<>();
+        userValue.put(key2, value);
+        data.put(key1, userValue);
     }
 
-    public HashMap<String, String> getData() {
+    public HashMap<String, HashMap<String, String>> getData() {
         return data;
     }
 

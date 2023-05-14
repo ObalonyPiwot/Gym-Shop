@@ -19,12 +19,16 @@
 			const imie = chance.first();
 			const nazwisko = chance.last();
 			const typ = chance.pickone(['Admin', 'Uzytkownik']);
-			const login = chance.word({ syllables: 2 });
 			const haslo = chance.hash({ length: 8 });
 			const email = chance.email();
-			const numer_telefonu = chance.phone();
+			let numer_telefonu = '';
+			for(let j = 0; j < 9; j++)
+			{
+				j == 0 ? numer_telefonu += Math.floor(Math.random() *9) + 1: numer_telefonu += Math.floor(Math.random() *10);
+			}
+				
 
-			const sqlQuery = `INSERT INTO ${tableName} VALUES (UzytkownikID.nextVal, '${imie}', '${nazwisko}', '${typ}', '${login}', '${haslo}', '${email}', '${numer_telefonu}');`;
+			const sqlQuery = `INSERT INTO ${tableName} VALUES (UzytkownikID.nextVal, '${imie}', '${nazwisko}', '${typ}', '${haslo}', '${email}', '${numer_telefonu}');`;
 
 			document.write(sqlQuery+"<br/>");
 		
