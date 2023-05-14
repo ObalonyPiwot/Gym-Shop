@@ -65,7 +65,7 @@ const Konto = () => {
                 .catch(error => console.log('Fetch error:', error));
             setLogged(true);
         } else
-        setLoading(true);
+        setLoading(false);
 
     }, []);
 
