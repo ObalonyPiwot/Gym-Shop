@@ -1,8 +1,8 @@
-const BlogList = ({ blogs, title, childToParent }) => {
+const BlogList = ({ blogs, title, childToParent, id }) => {
 
     return (
 
-        <div className="blogList">
+        <div className="blogList" id={id}>
             <div className="blogTitleDiv">
                 <div className="blogTitle">
                     <h2>{title}</h2>

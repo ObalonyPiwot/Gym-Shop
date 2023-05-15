@@ -39,9 +39,9 @@ const Home = () => {
 
          <div className='content'>  
             {/* <BlogList blogs ={blogs} title='Suplementy'/> */}
-            <BlogList blogs ={blogs.filter((blog) => blog.author ==='KFD')} title='Suplementy' childToParent={childToParent}/>
-            <BlogList blogs ={blogs.filter((blog) => blog.author ==='JUST7GYM')} title='Sprzęt'/>
-            <BlogList blogs ={blogs.filter((blog) => blog.id === 1 )} title='Akcesoria'/>
+            <BlogList blogs ={blogs.filter((blog) => blog.author ==='KFD')} id='suplementy' title='Suplementy' childToParent={childToParent}/>
+            <BlogList blogs ={blogs.filter((blog) => blog.author ==='JUST7GYM')} id='sprzet'  title='Sprzęt'/>
+            <BlogList blogs ={blogs.filter((blog) => blog.id === 1 )} id='akcesoria' title='Akcesoria'/>
          </div>
       </div>
      );
