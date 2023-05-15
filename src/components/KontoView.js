@@ -23,7 +23,7 @@ const KontoView = (props) => {
                 <button >Historia Zakupów</button>
                 <button >Ulubione</button>
                 <button >Reklamacje</button>
-                <button onClick={() => props.onLogOut('false')}>Wyloguj</button>
+                <button onClick={() => props.onLoggedSwitch('false')}>Wyloguj</button>
                 
             </div>
         </div>
