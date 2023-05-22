@@ -1,6 +1,7 @@
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import Stripe from 'react-stripe-checkout';
+import './Payment-Style.css'
 
 const Payment = (props) => {
 
@@ -32,6 +33,7 @@ const Payment = (props) => {
         return (
             <div className="App">
                 <Stripe
+                    className="paymentButton"
                     stripeKey="pk_test_51MzlNHGpf7NnxYjCcvT588Hm1PqwfRP9r2oX1uNrzoiH47oz0nOuFNOV28meAcwfWtQIg4FsUChoIdOOH7yIzNsH00PF7xfScF"
                     token={handleToken}
                 />

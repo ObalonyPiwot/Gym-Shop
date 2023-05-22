@@ -1,10 +1,12 @@
 import exit from "../assets/exit.png";
 import React, { useState } from 'react';
-import { getCookie } from "../CookieFunction";
+import { getCookie, checkCookieExists } from "../CookieFunction";
+import { useAlert } from "react-alert";
 
 function PreviewBlog({ item, childToParent }) {
 
     const [count, setCount] = useState(item.count);
+    const alert = useAlert();
 
     const handleQuantityChange = (event) => {
         setCount(event.target.value);
@@ -17,6 +19,8 @@ function PreviewBlog({ item, childToParent }) {
     const currentPrice = parseFloat(item.cena).toFixed(2) * count;
 
     function test() {
+        if(!checkCookieExists("SESSION-ID"))
+            alert.error("Brak autoryzacji");
         let validateData = JSON.stringify(item);
         const sessionCookie = getCookie("SESSION-ID");
         fetch('http://localhost/Cart/setRedisData', {

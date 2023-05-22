@@ -8,7 +8,7 @@ const KontoView = (props) => {
         <div className='content2'>
             <div className='logging'>
                 <div className='profilowe'>
-                    <img  src={zdjUzyt}/>
+                    <img  src={zdjUzyt} alt='userPhoto'/>
                 </div>
                 <label htmlFor='imie'>Imie</label>
                 <input value={user.imie} disabled id='imie' name='imie'/>

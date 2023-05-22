@@ -49,11 +49,6 @@ export const getSession = () => {
         });
     }
   };
-
-export const checkIfLogged = async() =>{
-  const sessionCookie = getCookie("SESSION-ID");
-}
-
 export const setUserSession = (userAccount) =>{
   const sessionCookie = getCookie("SESSION-ID");
   let validateData = JSON.stringify(userAccount);

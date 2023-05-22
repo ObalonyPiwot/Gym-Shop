@@ -7,6 +7,7 @@ import KontoView from "../components/KontoView";
 import { deleteCookie } from "../CookieFunction";
 import { getSession, setUserSession } from "../components/API_Communication/LoginAPI";
 import { getCookie, checkCookieExists } from "../CookieFunction";
+import { logOut } from "../components/API_Communication/UserLogout";
 
 const Konto = () => {
     const [currentForm, setCurrentForm] = useState('login');
@@ -28,6 +29,7 @@ const Konto = () => {
     }
     const onLogOut = (isLogged) => {
         setLogged(isLogged);
+        logOut();
         deleteCookie("SESSION-ID");
     }
 
