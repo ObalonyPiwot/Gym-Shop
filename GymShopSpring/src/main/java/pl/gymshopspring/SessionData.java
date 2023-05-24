@@ -22,7 +22,7 @@ public class SessionData implements HttpSessionBindingListener, Serializable {
 
     public void setData(String key1, String key2, String value ) {
         HashMap<String, String> userValue;
-        if (data == null)
+        if (data.get(key1) == null)
             userValue = new HashMap<>();
         else
             userValue = data.get(key1);

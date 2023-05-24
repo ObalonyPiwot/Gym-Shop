@@ -3,11 +3,13 @@ import Sidebar from './Sidebar';
 import CartList from './CartList';
 import { useState, useEffect } from 'react'
 import { getCookie } from "../CookieFunction";
+import { useAlert } from "react-alert";
 import '../cart.css';
 
 const KoszykZawartosc = (props) => {
 
     const [blogs, setBlogs] = useState([]);
+    const alert = useAlert();
 
 
     useEffect(() => {
@@ -82,7 +84,7 @@ const KoszykZawartosc = (props) => {
                         <h2> {result} zł</h2>
                     </div>
                     {blogs.length === 0 
-                        ?<button disabled="true">Idź do kasy</button> 
+                        ?<button onClick={() => alert.error("Brak przedmiotów")}>Idź do kasy</button> 
                         : <button onClick={() => props.onFormSwitch('payment')}>Idź do kasy</button> }
 
                 </div>

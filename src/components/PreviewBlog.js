@@ -19,7 +19,7 @@ function PreviewBlog({ item, childToParent }) {
     const currentPrice = parseFloat(item.cena).toFixed(2) * count;
 
     function test() {
-        if(!checkCookieExists("SESSION-ID"))
+        if (!checkCookieExists("SESSION-ID"))
             alert.error("Brak autoryzacji");
         let validateData = JSON.stringify(item);
         const sessionCookie = getCookie("SESSION-ID");
@@ -32,7 +32,13 @@ function PreviewBlog({ item, childToParent }) {
             body: validateData
         })
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => { 
+                console.log(result);
+                alert.success("dodano do koszyka");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000); 
+            })
             .catch(error => console.log('error', error));
     }
 
