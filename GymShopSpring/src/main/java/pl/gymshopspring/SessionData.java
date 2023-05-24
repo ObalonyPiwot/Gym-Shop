@@ -21,7 +21,11 @@ public class SessionData implements HttpSessionBindingListener, Serializable {
     private transient  HashMap<String, HashMap<String, String>> data = new HashMap<>();
 
     public void setData(String key1, String key2, String value ) {
-        HashMap<String, String> userValue = new HashMap<>();
+        HashMap<String, String> userValue;
+        if (data == null)
+            userValue = new HashMap<>();
+        else
+            userValue = data.get(key1);
         userValue.put(key2, value);
         data.put(key1, userValue);
     }

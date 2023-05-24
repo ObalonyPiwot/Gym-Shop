@@ -3,8 +3,6 @@ import Sidebar from './Sidebar';
 import CartList from './CartList';
 import { useState, useEffect } from 'react'
 import { getCookie } from "../CookieFunction";
-import Payment from "./Payment";
-import Cart from "./KoszykZawartosc";
 import '../cart.css';
 
 const KoszykZawartosc = (props) => {
@@ -13,7 +11,6 @@ const KoszykZawartosc = (props) => {
 
 
     useEffect(() => {
-
         const sessionCookie = getCookie("SESSION-ID");
         fetch('http://localhost/getDataFromSession', {
             method: 'GET',
@@ -37,61 +34,61 @@ const KoszykZawartosc = (props) => {
                     author: value.author,
                     id: value.id,
                     count: parseInt(value.count, 10)
-                  }));
-                  setBlogs(transformed);
+                }));
+                setBlogs(transformed);
             });
 
     }, []);
 
     let totalCena = blogs.reduce((total, blog) => {
-        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.')))*blog.count;
+        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.'))) * blog.count;
     }, 0).toFixed(2);
     let spendCena = 9.99;
     let result = parseFloat(totalCena) + parseFloat(spendCena);
 
     const handleBlogs = (newBlogs) => {
         setBlogs(newBlogs);
-      };
-      const payment = () => {
+    };
 
-      }
-    
 
-    return ( 
+    return (
         <div>
-         <Navbar/>
-         <Sidebar/>
-         <div className='cartContent'> 
-            <div className='koszyk'>
-                <div>
-                    <div className='koszykTitle'>
-                        <h2>KOSZYK</h2>
+            <Navbar />
+            <Sidebar />
+            <div className='cartContent'>
+                <div className='koszyk'>
+                    <div>
+                        <div className='koszykTitle'>
+                            <h2>KOSZYK</h2>
+                        </div>
+                        <div className='list'>
+                            <CartList blogs={blogs.filter((blog) => blog.author === 'KFD')} handleBlogs={handleBlogs} />
+                        </div>
                     </div>
-                    <div className='list'>
-                        <CartList   blogs={blogs.filter((blog) => blog.author ==='KFD')} handleBlogs={handleBlogs} />
+                </div>
+                <div className='paying'>
+                    <div className='payingMainDivPrice'>
+                        <div className='payingDivPrice'>
+                            <h2>{blogs.reduce((acc, curr) => acc + curr.count, 0)} szt.</h2>
+                            <h2> {totalCena} zł</h2>
+                        </div>
+                        <div className='payingDivPrice'>
+                            <h2>Wysyłka</h2>
+                            <h2> {spendCena} zł</h2>
+                        </div>
                     </div>
+                    <div className='payingDivPrice'>
+                        <h2> Razem</h2>
+                        <h2> {result} zł</h2>
+                    </div>
+                    {blogs.length === 0 
+                        ?<button disabled="true">Idź do kasy</button> 
+                        : <button onClick={() => props.onFormSwitch('payment')}>Idź do kasy</button> }
+
                 </div>
             </div>
-            <div className='paying'>
-                <div className='payingMainDivPrice'>
-                    <div className='payingDivPrice'>
-                        <h2>{blogs.reduce((acc, curr) => acc + curr.count, 0)} szt.</h2>
-                        <h2> {totalCena} zł</h2>
-                    </div>
-                    <div className='payingDivPrice'>
-                        <h2>Wysyłka</h2>
-                        <h2> {spendCena} zł</h2>
-                    </div>
-                </div>
-                <div className='payingDivPrice'>
-                    <h2> Razem</h2>
-                    <h2> { result} zł</h2>
-                </div>
-                <button onClick={() => props.onFormSwitch('payment')}>Przejdź do płaności</button>
-            </div>
-         </div>
-      </div>
-     );
- }
- 
- export default KoszykZawartosc;
+        </div>
+    );
+}
+
+export default KoszykZawartosc;
