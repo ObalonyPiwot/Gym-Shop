@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generator INSERT</title>
+    <script src="https://cdn.jsdelivr.net/npm/chance/dist/chance.min.js"></script>
+    
+  </head>
+  <body>
+    <h1>Generator INSERT</h1>
+	
+	<script>
+	
+		//  - USER  - // 
+      function generateUser(tableName) {
+
+		for(let i = 0; i < 30;i++)
+		{
+			const chance = new Chance();
+			const imie = chance.first();
+			const nazwisko = chance.last();
+			const typ = chance.pickone(['Admin', 'Uzytkownik']);
+			const haslo = chance.hash({ length: 8 });
+			const email = chance.email();
+			let numer_telefonu = '';
+			for(let j = 0; j < 9; j++)
+			{
+				j == 0 ? numer_telefonu += Math.floor(Math.random() *9) + 1: numer_telefonu += Math.floor(Math.random() *10);
+			}
+				
+
+			const sqlQuery = `INSERT INTO ${tableName} VALUES (UzytkownikID.nextVal, '${imie}', '${nazwisko}', '${typ}', '${haslo}', '${email}', '${numer_telefonu}');`;
+
+			document.write(sqlQuery+"<br/>");
+		
+		}
+        
+      }
+	  
+	  // - przedmioty - //
+		function generatePrzedmiot(tableName) {
+			let nazwa = [
+			  'Białko serwatkowe',
+			  'Kreatyna',
+			  'BCAA',
+			  'Glutamina',
+			  'Pre-workout',
+			  'Witaminy i minerały',
+			  'Tłuszcz omega-3',
+			  'Żelazo',
+			  'Butelka na wodę',
+			  'Ręcznik treningowy',
+			  'Zestaw sztangielek',
+			  'Mata treningowa',
+			  'Pas treningowy',
+			  'Rękawice treningowe',
+			  'Paski treningowe',
+			  'Chusta na szyję',
+			  'Szelki na ciężary',
+			  'Pas do podciągania',
+			  'Pompki',
+			  'Drążek do podciągania',
+			  'Hantle regulowane',
+			  'Bieżnia elektryczna',
+			  'Rowerek stacjonarny',
+			  'Orbitrek',
+			  'Platforma do podnoszenia ciężarów',
+			  'Skakanka',
+			  'Piłka do ćwiczeń',
+			  'Worki treningowe',
+			  'Rower treningowy',
+			  'Zestaw do wspinaczki'
+			];
+			
+			for(let i=0; i<30;i++)
+			{
+				const chance = new Chance();
+					
+				const nazwaProduktu = nazwa[Math.floor(Math.random()*nazwa.length)];
+				const opis = chance.paragraph({ sentences: 2 });
+				const cena = chance.floating({ min: 1, max: 1000, fixed: 2 });
+				const idTypu = chance.integer({ min: 1, max: 5 });
+
+				const sqlQuery = `INSERT INTO ${tableName} VALUES ( produktyID.nextVal, '${nazwa[i]}', '${opis}', ${cena}, ${idTypu});`;
+
+				document.write(sqlQuery+"<br/>");
+			}
+			
+		}
+
+	document.write("<br/> <h3> uzytkownik </h3> <br/>");
+      // - user
+    generateUser('uzytkownik');
+	  
+	document.write("<br/> <h3> przedmioty </h3> <br/>");
+	
+	generatePrzedmiot('produkty');
+    </script>
+  </body>
+</html>
