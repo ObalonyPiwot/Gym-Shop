@@ -1,0 +1,188 @@
+.cartContent{
+    display: flex;
+    justify-content: space-around;
+    gap: 10em;
+}
+
+.koszyk{
+    position: relative;
+    margin-left: 5%;
+    z-index: 1;
+    flex-grow: 1;
+}
+.koszykTitle{
+    padding-bottom: 10px;
+    width: 100%;
+    border-bottom: white 1px solid;
+    color: #ffffff;
+}
+
+
+.CartPreview{
+    /* padding: 10px 16px; */
+    margin: 20px;
+    border: 1px solid #626263;
+    width: 100%;
+    height: fit-content;
+    /* background: rgba(0, 0, 0, 0); */
+    /* background: red; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1%;
+    transition: border 0.3s ease-out 50ms;
+    transition: background-color 0.3s ease-out 50ms;
+    position: relative;
+    z-index: 0;
+    background-color: rgb(45, 45, 45);
+  }
+  
+  
+  .CartPreview:hover{
+    /* background-color: rgba(41, 41, 41, 0.438); */
+    border: 1px solid #ffffff;
+    /* color: black; */
+    /* flex-basis: 270px; */
+    background-color: rgb(56, 56, 56);
+  }
+  
+  .CartPreview p {
+    color: #be9e44;
+    margin-bottom: 8px;
+  }
+  
+  .CartPreview img{
+    width: 10em;
+    flex-grow: 0;
+  }
+  
+  .CartPreview .image:hover{
+    /* flex-basis: 350px */
+  }
+  
+  .CartPreview .text {
+    flex-grow: 2;
+    display: flex;
+    gap: 2em;
+    width: 100%;
+    flex-direction: row;
+    height: max-content;
+
+  }
+  
+  .CartPreview p {
+    position: relative;
+    bottom: 0;
+    left: 0; 
+  }
+  .CartPreview .author {
+    flex-grow: 1;
+    display: inline-block;
+    color: rgb(185, 185, 185);
+  }
+  .CartPreview .top{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  .CartPreview .middle{
+    width: 100%;
+    display: flex;
+    gap: 2em;
+  }
+
+  .quantity {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    padding: 0.5rem;
+    border: none;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: #404040;
+    color: #ffffff;
+    text-align: center;
+    width: fit-content;
+    height: 1rem;
+    border: #be9e44 1px solid;
+    background-image: url('data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20viewBox%3D%220%200%2050%2067%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20stroke-width%3D%222%22%3E%3Cline%20x1%3D%221%22%20x2%3D%2250%22%20y1%3D%2233.5%22%20y2%3D%2233.5%22%20stroke%3D%22%23D8D8D8%22%2F%3E%3Cpolyline%20transform%3D%22translate(25%2020)%20rotate(45)%20translate(-25%20-20)%22%20points%3D%2219%2026%2019%2014%2032%2014%22%20stroke%3D%22%23000%22%2F%3E%3Cpolyline%20transform%3D%22translate(25%2045)%20rotate(225)%20translate(-25%20-45)%22%20points%3D%2219%2052%2019%2039%2032%2039%22%20stroke%3D%22%23000%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+    background-position: center right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    caret-color: transparent;
+  }
+  
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    opacity: 1 !important;
+    background: transparent !important;
+    border-width: 0px;
+    margin: 0;
+    border-left: 1px solid #be9e44;
+    height: 34px;
+    width: 23px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  
+  .quantity:focus {
+    outline: none;
+  }
+
+  .CartPreview .bottom{
+    font-size: smaller;
+    display: inline-block;
+    color: rgb(185, 185, 185);
+    width: 100%;
+    font-size: larger;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .CartPreview .bottom .trash{
+    padding-right: 50px;
+  }
+
+.paying{
+   padding-top: 5em;
+   padding-right: 2em;
+   width: 15em;
+   flex-grow: 0;
+  }
+  
+  .paying h2{
+    margin-bottom: 1%;
+    margin-top: 1%;
+  }
+
+.paying .payingMainDivPrice{
+    border-bottom: white 1px solid;
+    padding-bottom: 15px;
+}
+
+  .paying .payingDivPrice{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #ffffff;
+    font-size: 12px;
+  }
+  
+  .paying button{
+    margin-top: 25px;
+    width: 100%;
+    background-color: #2c2c2c;
+    border: 3px solid #be9e44;
+    color: #be9e44;
+    padding: 10px 0;
+    padding: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .paying button:hover{
+    background-color: #be9e44;
+    font-weight: bolder;
+    color: black;
+  }
