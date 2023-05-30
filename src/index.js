@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { transitrions, positions, Provider as AlertProvider } from 'react-alert'
+import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

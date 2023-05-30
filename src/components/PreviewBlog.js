@@ -21,16 +21,18 @@ function PreviewBlog({ item, childToParent }) {
     function test() {
         if (!checkCookieExists("SESSION-ID"))
             alert.error("Brak autoryzacji");
-        let validateData = JSON.stringify(item);
-        const sessionCookie = getCookie("SESSION-ID");
-        fetch('http://localhost/Cart/setRedisData', {
-            method: 'POST',
-            headers: {
-                'SESSIONID': sessionCookie,
-                'Content-Type': 'application/json'
-            },
-            body: validateData
-        })
+        else{
+
+            let validateData = JSON.stringify(item);
+            const sessionCookie = getCookie("SESSION-ID");
+            fetch('http://localhost/Cart/setRedisData', {
+                method: 'POST',
+                headers: {
+                    'SESSIONID': sessionCookie,
+                    'Content-Type': 'application/json'
+                },
+                body: validateData
+            })
             .then(response => response.text())
             .then(result => { 
                 console.log(result);
@@ -40,6 +42,7 @@ function PreviewBlog({ item, childToParent }) {
                 }, 1000); 
             })
             .catch(error => console.log('error', error));
+        }
     }
 
     let src = require(`${item.photo}`);

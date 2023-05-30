@@ -186,3 +186,164 @@
     font-weight: bolder;
     color: black;
   }
+
+  :root {
+    --primary: #be9e44;
+    --secondary: #8b7331;
+    --white: #fff;
+    --gray: #9b9b9b;
+  }
+  
+  .form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 50%;
+  }
+  
+  .form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid var(--gray);
+    outline: 0;
+    font-size: 1.3rem;
+    color: var(--white);
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+  }
+  
+  .form__field::placeholder {
+    color: transparent;
+  }
+  
+  .form__field:placeholder-shown ~ .form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+  
+  .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--gray);
+  }
+  
+  .form__field:focus ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+  
+  .form__field:focus {
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, var(--primary), var(--secondary));
+    border-image-slice: 1;
+  }
+  
+  /* reset input */
+  .form__field:required,
+  .form__field:invalid {
+    box-shadow: none;
+  }
+  
+.inputAdress{
+  display: flex;
+  flex-direction: column;
+}
+
+.payButton {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+
+/* RADIO BUTTONS */
+form {
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  /* place-content: center; */
+}
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+.form-control + .form-control {
+  margin-top: 1em;
+}
+
+.form-control:focus-within {
+  color: var(--form-control-color);
+}
+
+input[type="radio"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--primary);
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+
+/* SUBMIT BUTTON */
+.nextStep{
+  margin-top: 15px;
+  margin-bottom: 35px;
+  width: 100%;
+}
+.nextStep:hover{
+  cursor: pointer;
+  background-color: #8b7331;
+}

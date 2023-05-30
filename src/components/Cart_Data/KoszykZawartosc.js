@@ -1,10 +1,10 @@
-import Navbar from './Navbar';
-import Sidebar from './Sidebar';
-import CartList from './CartList';
+import Navbar from '../Navbar';
+import Sidebar from '../Sidebar';
+import CartList from '../CartList';
 import { useState, useEffect } from 'react'
-import { getCookie } from "../CookieFunction";
+import { getCookie } from "../../CookieFunction";
 import { useAlert } from "react-alert";
-import '../cart.css';
+import './cart.css';
 
 const KoszykZawartosc = (props) => {
 
@@ -13,6 +13,7 @@ const KoszykZawartosc = (props) => {
 
 
     useEffect(() => {
+        console.log(blogs.length);
         const sessionCookie = getCookie("SESSION-ID");
         fetch('http://localhost/getDataFromSession', {
             method: 'GET',
@@ -40,13 +41,14 @@ const KoszykZawartosc = (props) => {
                 setBlogs(transformed);
             });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     let totalCena = blogs.reduce((total, blog) => {
         return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.'))) * blog.count;
     }, 0).toFixed(2);
     let spendCena = 9.99;
-    let result = parseFloat(totalCena) + parseFloat(spendCena);
+    let result = (parseFloat(totalCena) + parseFloat(spendCena)).toFixed(2);
 
     const handleBlogs = (newBlogs) => {
         setBlogs(newBlogs);
@@ -85,7 +87,7 @@ const KoszykZawartosc = (props) => {
                     </div>
                     {blogs.length === 0 
                         ?<button onClick={() => alert.error("Brak przedmiotów")}>Idź do kasy</button> 
-                        : <button onClick={() => props.onFormSwitch('payment')}>Idź do kasy</button> }
+                        : <button onClick={() => { props.initProducts(blogs, result, blogs.reduce((acc, curr) => acc + curr.count, 0)); props.onFormSwitch('payment')}}>Idź do kasy</button> }
 
                 </div>
             </div>
