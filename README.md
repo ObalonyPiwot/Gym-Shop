@@ -3,4 +3,4 @@
 ### Zmien port na ten który obsluguje twoja baza oracle
 ### Zmien sciezke zapisywanych zdjec na swoj folder docelowy
 # Control
-### Zmien scieżki zapisywanych zdjec na swoj folder docelowy
+### Zmien scieżki zapisywanych zdjec na swoj folder docelowy w uploadPhoto i getPhoto
