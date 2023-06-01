@@ -1,6 +1,6 @@
 package pl.gymshopspring;
 
-mport com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
@@ -380,7 +380,7 @@ public class Controller {
         }	
         try {	
             // Zapisz plik na serwerze	
-            File destination = new File("D:/studia/studia/semestr 6/gymshop/zdjecia/" + fileName);	
+            File destination = new File("C:/inetpub/wwwroot/gymShop/content/" + fileName);
             file.transferTo(destination);	
             try {	
                 System.out.println(sql);	
@@ -396,7 +396,7 @@ public class Controller {
     }	
     @GetMapping("/getPhoto")	
     public ResponseEntity<Resource> getPhoto() {	
-        String filePath = "D:/studia/studia/semestr 6/gymshop/zdjecia/1.png"; // Ścieżka do pliku ze zdjęciem	
+        String filePath = "C:/inetpub/wwwroot/gymShop/content/1.png"; // Ścieżka do pliku ze zdjęciem
         Resource photo = new FileSystemResource(filePath);	
         if (photo.exists()) {	
             System.out.println("je");	

@@ -73,3 +73,7 @@ h2{
     margin-left: auto;
     width: 50%;
 }
+
+.error-message{
+    color: red;
+}

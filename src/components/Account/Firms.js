@@ -3,7 +3,7 @@ import AddFirm from "../ForFirms/AddFirm";
 import AddGym from "../ForFirms/AddGym";
 import MakeOrder from "../ForFirms/MakeOrder";
 import ServiceRequest from "../ForFirms/ServiceRequest";
-import PhotoViewer from '../PhotoViewer';
+//import PhotoViewer from '../PhotoViewer';
 
 const Firms = (props) => {
     const [action, setAction] = useState(0);
@@ -18,7 +18,7 @@ const Firms = (props) => {
                 <button onClick={() => setAction(2)}>Moje Siłownie</button>
                 <button onClick={() => setAction(3)}>Zawrzyj umowę</button>
                 <button onClick={() => setAction(4)}>Zgłoś serwis</button>
-                <button onClick={() => setAction(5)}>Test</button>
+                {/* <button onClick={() => setAction(5)}>Test</button> */}
                 <button onClick={() => props.changeState(0)}>Cofnij</button>
                 </>
                 )}
@@ -35,7 +35,8 @@ const Firms = (props) => {
                     <ServiceRequest user={props.user} setAction = {setAction}/>
                 )}
                 {action===5 &&(
-                    <PhotoViewer user={props.user} setAction = {setAction}/>
+                    <div></div>
+                    // <PhotoViewer user={props.user} setAction = {setAction}/>
                 )}
             </div>
         </div>

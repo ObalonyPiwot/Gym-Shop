@@ -15,13 +15,14 @@ const Payment = (props) => {
         city: '',
         phone: ''
     })
+    const [errors, setErrors] = useState({});
 
     const __handleRadioChange = (_event_) => {
         setSelectedOption(_event_.target.value);
     }
     const __handleInputChange = (_event_) => {
-        const {name, value} = _event_.target;
-        setPaymentData( (_prevData) => ({
+        const { name, value } = _event_.target;
+        setPaymentData((_prevData) => ({
             ..._prevData,
             [name]: value
         }));
@@ -55,6 +56,22 @@ const Payment = (props) => {
     function __validatePayment(event) {
         event.preventDefault();
 
+        const validationErrors = {};
+        let hasErrors = false;
+        
+        Object.keys(paymentData).forEach((field) => {
+            if (paymentData[field].trim() === '') {
+                validationErrors[field] = `Pole ${field.charAt(0).toUpperCase() + field.slice(1)} jest wymagane`;
+                hasErrors = true;
+            }
+        });
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            return;
+        }
+        console.log(paymentData);
+
     }
     return (
         <div className="App">
@@ -69,90 +86,23 @@ const Payment = (props) => {
 
                         <div className='inputAdress'>
                             <p>Adresy dostawy</p>
-                            <div class="form__group field ">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="name"
-                                    value={paymentData.name}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="name" class="form__label">Imie</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="surname"
-                                    value={paymentData.surname}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="surname" class="form__label">Nazwisko</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="street"
-                                    value={paymentData.street}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="street" class="form__label">Ulica</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="houseNr"
-                                    value={paymentData.houseNr}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="houseNr" class="form__label">Numer Budynku/mieszkania</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="postCode"
-                                    value={paymentData.postcode}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="postcode" class="form__label">Kod pocztowy</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="city"
-                                    value={paymentData.city}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="city" class="form__label">Miasto</label>
-                            </div>
-                            <div class="form__group field">
-                                <input
-                                    type="input"
-                                    class="form__field"
-                                    placeholder="Name"
-                                    name="phone"
-                                    value={paymentData.phone}
-                                    onChange={__handleInputChange}
-                                    required
-                                />
-                                <label for="phone" class="form__label">Telefon</label>
-                            </div>
+                            {Object.keys(paymentData).map((field) => (
+                                <div className={`form__group field ${errors[field] ? 'highlight' : ''}`} key={field}>
+                                    <input
+                                        type="input"
+                                        className="form__field"
+                                        placeholder="Name"
+                                        name={field}
+                                        value={paymentData[field]}
+                                        onChange={__handleInputChange}
+                                        required
+                                    />
+                                    {errors[field] && <p className="error-message">{errors[field]}</p>}
+                                    <label htmlFor={field} className="form__label">
+                                        {field.charAt(0).toUpperCase() + field.slice(1)}
+                                    </label>
+                                </div>
+                            ))}
                         </div>
 
 
@@ -163,7 +113,7 @@ const Payment = (props) => {
                         <div className='inputAdress'>
                             <p>Sposób dostawy</p>
                             <form action="">
-                                <label class="form-control">
+                                <label className="form-control">
                                     <input
                                         type="radio"
                                         name="radio"
@@ -174,7 +124,7 @@ const Payment = (props) => {
                                     DHL
                                 </label>
 
-                                <label class="form-control">
+                                <label className="form-control">
                                     <input
                                         type="radio"
                                         name="radio"
@@ -186,8 +136,8 @@ const Payment = (props) => {
                                 </label>
                             </form>
                         </div>
-                        <button className='nextStep' onClick={() => __validatePayment()}>
-                            DALEJ
+                        <button className='nextStep' type="button" onClick={__validatePayment}>
+                            Dalej
                         </button>
                     </div>
 
