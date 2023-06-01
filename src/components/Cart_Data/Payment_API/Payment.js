@@ -3,6 +3,7 @@ import Stripe from 'react-stripe-checkout';
 import Navbar from '../../Navbar';
 import './Payment-Style.css';
 import { useState } from 'react';
+import { useAlert } from 'react-alert';
 
 const Payment = (props) => {
     const [selectedOption, setSelectedOption] = useState('dhl');
@@ -17,6 +18,7 @@ const Payment = (props) => {
     })
     const [errors, setErrors] = useState({});
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const _alert = useAlert();
 
     const __handleRadioChange = (_event_) => {
         setSelectedOption(_event_.target.value);
@@ -35,7 +37,7 @@ const Payment = (props) => {
             headers: {
                 'Content-Type': 'application/json',
                 'token': token.id,
-                'amount': 500
+                'amount': props.products.result
             },
             body: JSON.stringify({
                 email: 'example@example.com',
@@ -46,7 +48,7 @@ const Payment = (props) => {
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Płatność została pomyślnie przetworzona.');
+                    _alert.success("Płatność została pomyślnie przetworzona");
                 } else {
                     throw new Error('Wystąpił błąd podczas przetwarzania płatności.');
                 }
