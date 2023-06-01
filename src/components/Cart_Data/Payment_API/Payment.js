@@ -16,6 +16,7 @@ const Payment = (props) => {
         phone: ''
     })
     const [errors, setErrors] = useState({});
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     const __handleRadioChange = (_event_) => {
         setSelectedOption(_event_.target.value);
@@ -54,6 +55,7 @@ const Payment = (props) => {
     }
 
     function __validatePayment(event) {
+        setIsButtonDisabled(true);
         event.preventDefault();
 
         const validationErrors = {};
@@ -70,6 +72,8 @@ const Payment = (props) => {
             setErrors(validationErrors);
             return;
         }
+        setErrors( {});
+        setIsButtonDisabled(false);
         console.log(paymentData);
 
     }
@@ -155,6 +159,7 @@ const Payment = (props) => {
                     <hr></hr>
                     <div className='categoryInput payButton'>
                         <Stripe
+                            disabled={isButtonDisabled}
                             className="paymentButton"
                             stripeKey="pk_test_51MzlNHGpf7NnxYjCcvT588Hm1PqwfRP9r2oX1uNrzoiH47oz0nOuFNOV28meAcwfWtQIg4FsUChoIdOOH7yIzNsH00PF7xfScF"
                             token={handleToken}
