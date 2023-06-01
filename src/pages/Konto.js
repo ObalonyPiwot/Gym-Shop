@@ -8,6 +8,7 @@ import { deleteCookie } from "../CookieFunction";
 import { getSession, setUserSession } from "../components/API_Communication/LoginAPI";
 import { getCookie, checkCookieExists } from "../CookieFunction";
 import { logOut } from "../components/API_Communication/UserLogout";
+import { useAlert } from "react-alert";
 
 const Konto = () => {
     const [currentForm, setCurrentForm] = useState('login');
@@ -15,6 +16,7 @@ const Konto = () => {
     const [firstTimeGoogleLogin, setFirstTimeGoogleLogin] = useState('false');
     const [user, setUser] = useState('');
     const [loading, setLoading] = useState(true); // Nowy stan do śledzenia statusu ładowania danych
+    const alert = useAlert();
 
     const toggleForm = (formName) => {
         setCurrentForm(formName);
@@ -31,6 +33,11 @@ const Konto = () => {
         setLogged(isLogged);
         logOut();
         deleteCookie("SESSION-ID");
+        alert.success("dodano do koszyka");
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+
     }
 
     useEffect(() => {
@@ -67,7 +74,7 @@ const Konto = () => {
                 .catch(error => console.log('Fetch error:', error));
             setLogged(true);
         } else
-        setLoading(false);
+            setLoading(false);
 
     }, []);
 

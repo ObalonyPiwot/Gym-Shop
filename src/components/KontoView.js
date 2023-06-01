@@ -33,7 +33,7 @@ const KontoView = (props) => {
                     <button onClick={() => setAction(4)}>Reklamacje</button>
                     <button onClick={() => setAction(5)}>Panel dla Firm</button>
                     {user.typKonta==='Admin' && (<button onClick={() => setAction(6)}>Panel Admina</button>)}
-                    <button onClick={() => {props.onLoggedSwitch(false); console.log("xxx")}}>Wyloguj</button>
+                    <button onClick={() => {props.onLoggedSwitch(false);}}>Wyloguj</button>
                 </div>
             </div>
         )}
