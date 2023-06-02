@@ -80,6 +80,26 @@ public class Controller {
         }
     }
 
+    // - delete products when payment will succesful
+    @GetMapping("/deleteProducts")
+    public String deleteProducts(HttpServletRequest request){
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        sessionData.getData().remove("collections");
+        redisTemplate.opsForValue().set(sessionId, sessionData);
+        return "Succes";
+    }
+
+    // delete selected item
+    @PostMapping("/deleteProduct")
+    public String deleteProduct(@RequestBody String item, HttpServletRequest request) throws SQLException {
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        sessionData.getData().get("collections").remove(item);
+        redisTemplate.opsForValue().set(sessionId, sessionData);
+        return "";
+    }
+
 
     @GetMapping("/api/getSessionID")
     public String getSessionId(HttpServletRequest request) {
@@ -280,17 +300,10 @@ public class Controller {
             return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";	
         }	
     }	
-    @GetMapping("/deleteProduct/{productId}")	
-    public String deleteProduct(@PathVariable("productId") String productId) throws SQLException {	
-        String sql = "Update produkty set isActive = '0' where ID = '"+productId+"'" ;	
-        try {	
-            System.out.println(sql);	
-            jdbc.update(sql);	
-            return "{\"Status\":\"success\"}";	
-        } catch (Exception ex) {	
-            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";	
-        }	
-    }	
+
+
+
+
     @GetMapping("/selectUserFirm/{userID}")	
     public String selectUserFirm(@PathVariable("userID") String userID) throws SQLException {	
         String sql = "Select * from Firmy where IDUzyt="+userID;	
@@ -407,5 +420,7 @@ public class Controller {
             return ResponseEntity.notFound().build();	
         }	
     }
+
+
 }
 

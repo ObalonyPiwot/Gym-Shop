@@ -546,3 +546,7 @@ html{
   font-weight: bolder;
   color: black;
 }
+
+.TrashIcon{
+  cursor: pointer;
+}

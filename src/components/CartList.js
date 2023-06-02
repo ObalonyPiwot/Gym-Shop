@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { FaTrash } from 'react-icons/fa';
 import React, { useState } from 'react';
+import { deleteSpecificDataFromSession } from './API_Communication/CartDataAPI';
 
 const CartList = ({ blogs, handleBlogs }) => {
 
@@ -40,12 +42,12 @@ const CartList = ({ blogs, handleBlogs }) => {
                                     className="quantity"
                                     min="1" max="99"
                                     placeholder={blog.count}
-                                    onChange={(event) => {handleQuantityChange(index, event);}}
+                                    onChange={(event) => { handleQuantityChange(index, event); }}
                                 />
                                 <p className="cena"> {currentPrice} zł</p>
                             </div>
                             <div className="bottom">
-                                <div className='trash'>
+                                <div className='trash TrashIcon' onClick={ () => deleteSpecificDataFromSession(blog.title)}>
                                     <FaTrash />
                                 </div>
                             </div>

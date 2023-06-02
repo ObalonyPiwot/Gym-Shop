@@ -4,6 +4,8 @@ import Navbar from '../../Navbar';
 import './Payment-Style.css';
 import { useState } from 'react';
 import { useAlert } from 'react-alert';
+import { useNavigate } from 'react-router-dom';
+import { deleteDataFromSession } from '../../API_Communication/CartDataAPI';
 
 const Payment = (props) => {
     const [selectedOption, setSelectedOption] = useState('dhl');
@@ -19,6 +21,9 @@ const Payment = (props) => {
     const [errors, setErrors] = useState({});
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const _alert = useAlert();
+
+    // - for move to home after succesful payment
+    const _navigate = useNavigate();
 
     const __handleRadioChange = (_event_) => {
         setSelectedOption(_event_.target.value);
@@ -41,7 +46,7 @@ const Payment = (props) => {
             },
             body: JSON.stringify({
                 email: 'example@example.com',
-                currency: 'usd',
+                currency: 'pln',
                 name: 'Example Name',
                 description: 'Example Description'
             })
@@ -49,6 +54,10 @@ const Payment = (props) => {
             .then(response => {
                 if (response.ok) {
                     _alert.success("Płatność została pomyślnie przetworzona");
+                    setTimeout( () => {
+                        deleteDataFromSession();
+                        _navigate('/');
+                    }, 500)
                 } else {
                     throw new Error('Wystąpił błąd podczas przetwarzania płatności.');
                 }

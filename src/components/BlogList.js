@@ -14,6 +14,7 @@ const BlogList = ({ blogs, title, childToParent, id }) => {
                     const photo = blog.photo;
                     let src = require(`${photo}`);
                     return (
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <a className='blogPreview' key={blog.id} onClick={() => childToParent(blog)}>
                             <div className="image">
                                 <img src={src} alt={blog.title} />
