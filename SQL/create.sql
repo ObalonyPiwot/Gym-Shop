@@ -18,14 +18,16 @@ drop table silownie;
 drop sequence silownieID;
 drop table transakcje;
 drop sequence transakcjeID;
+drop table daneTransakcji;
+drop sequence daneTransakcjiID;
+drop table koszyk;
+drop sequence koszykID;
 drop table typy;
 drop sequence typyID;
 drop table ulubione;
 drop sequence ulubioneID;
 drop table umowy;
 drop sequence umowyID;
-drop table zdjecia;
-drop sequence zdjeciaID;
 drop table KODYRABATOWE;
 drop sequence KODYRABATOWEID;
 
@@ -43,6 +45,7 @@ create table produkty(
     ID numeric primary key,
     nazwa NVARCHAR2(50),
     Opis NVARCHAR2(500),
+    Zdjecie NVARCHAR2(50),
     Cena FLOAT,
     IDTypu numeric
 );
@@ -52,9 +55,18 @@ create table transakcje(
     IDProd numeric,
     IDUzyt numeric,
     Data DATE,
-    Opis NVARCHAR2(500)
+    Cena float
 );
-
+create table daneTransakcji(
+    ID numeric primary key,
+    IDTransakcji numeric,
+    czySukces char(1) default 'F',
+    CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
+);
+create table koszyk(
+    IDTrans numeric,
+    IDProd numeric
+);
 create table reklamacje(
     ID numeric primary key,
     IDProd numeric,
@@ -95,15 +107,9 @@ create table ulubione (
     IDUzyt numeric
 );
 
-create table zdjecia (
-    ID numeric primary key,
-    IDProd numeric,
-    Zdjecie NVARCHAR2(50)
-);
-
 create table kodyRabatowe (
     ID numeric primary key,
-    Kod numeric,
+    Kod NVARCHAR2(50),
     Rabat FLOAT,
     DataWaznosci DATE,
     CzyUzyty char(1) default 'F',
@@ -165,10 +171,6 @@ create table serwisy (
     minvalue 0
     start with 1
     increment by 1;
-      Create sequence zdjeciaID
-    minvalue 0
-    start with 1
-    increment by 1;
       Create sequence ulubioneID
     minvalue 0
     start with 1
@@ -198,6 +200,14 @@ create table serwisy (
     start with 1
     increment by 1;
       Create sequence produktyID
+    minvalue 0
+    start with 1
+    increment by 1;
+          Create sequence daneTransakcjiID
+    minvalue 0
+    start with 1
+    increment by 1;
+          Create sequence koszykID
     minvalue 0
     start with 1
     increment by 1;
