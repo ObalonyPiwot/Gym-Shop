@@ -278,10 +278,12 @@ html{
   
 }
 
-.sidebar a {
+.sidebar button{
   padding: 5px;
   padding-top: 8px;
   width: 10%;
+  background-color: transparent;
+  border: 0;
   text-align: center;
   /* height: auto; */
   display: block;
@@ -294,7 +296,7 @@ html{
   transition: border-bottom 500ms ease-out 20ms;
   transition: color 500ms ease-out 20ms;
 }
-.sidebar a:hover{
+.sidebar button:hover{
   border-bottom: 5px solid #be9e44;
   color: white;
 }
@@ -545,8 +547,4 @@ html{
   background-color: #be9e44;
   font-weight: bolder;
   color: black;
-}
-
-.TrashIcon{
-  cursor: pointer;
 }
