@@ -22,8 +22,6 @@ drop table daneTransakcji;
 drop sequence daneTransakcjiID;
 drop table koszyk;
 drop sequence koszykID;
-drop table typy;
-drop sequence typyID;
 drop table ulubione;
 drop sequence ulubioneID;
 drop table umowy;
@@ -47,7 +45,11 @@ create table produkty(
     Opis NVARCHAR2(500),
     Zdjecie NVARCHAR2(50),
     Cena FLOAT,
-    IDTypu numeric
+    ostCena FLOAT default 0,
+    dataDodania Date,
+    IDGRUPY numeric,
+    isActive numeric default 1,
+    onPromotion numeric default 0
 );
 
 create table transakcje(
@@ -83,12 +85,6 @@ create table oceny(
     Data DATE,
     Opis NVARCHAR2(500),
     Ocena FLOAT
-);
-
-create table typy (
-    ID numeric primary key,
-    IDGr numeric,
-    Nazwa NVARCHAR2(50)
 );
 
 create table grupy (
