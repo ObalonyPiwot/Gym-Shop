@@ -19,39 +19,29 @@ function PreviewBlog({ item, childToParent }) {
     const currentPrice = parseFloat(item.cena).toFixed(2) * count;
 
     function test() {
-        if (!checkCookieExists("SESSION-ID"))
+        if(!checkCookieExists("SESSION-ID"))
             alert.error("Brak autoryzacji");
-        else{
-
-            let validateData = JSON.stringify(item);
-            const sessionCookie = getCookie("SESSION-ID");
-            fetch('http://localhost/Cart/setRedisData', {
-                method: 'POST',
-                headers: {
-                    'SESSIONID': sessionCookie,
-                    'Content-Type': 'application/json'
-                },
-                body: validateData
-            })
+        let validateData = JSON.stringify(item);
+        const sessionCookie = getCookie("SESSION-ID");
+        fetch('http://localhost/Cart/setRedisData', {
+            method: 'POST',
+            headers: {
+                'SESSIONID': sessionCookie,
+                'Content-Type': 'application/json'
+            },
+            body: validateData
+        })
             .then(response => response.text())
-            .then(result => { 
-                console.log(result);
-                alert.success("dodano do koszyka");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000); 
-            })
+            .then(result => console.log(result))
             .catch(error => console.log('error', error));
-        }
     }
 
-    let src = require(`${item.photo}`);
     return (
         <div className="inspectBlog">
             <div className='content3'>
                 <div className='zdjecie'>
                     {/* <img src={logo}/> */}
-                    <img src={src} alt={item.title} />
+                    <img src={item.photo} alt={item.title} />
                 </div>
                 <div className="previewContent">
                     <div className='tekst'>
