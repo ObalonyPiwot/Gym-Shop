@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 
-function Sidebar(){
-    return(
-        <div className="sidebar">
-            {/* <li><a href="index.html">Suplementy</a></li>
-            <li><a href="index2.html">Akcesoria</a></li>
-			<li><a href="index3.html">Sprzęt</a></li> */}
-            <a href="#suplementy">Suplementy</a>
-            <a href="#akcesoria">Akcesoria</a>
-			<a href="#sprzet">Sprzęt</a>
-        </div>
-    )
+function Sidebar(props) {
+  const [categoryList, setCategoryList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost/selectCategories');
+        const data = await response.json();
+        const categories = data.Kategorie;
+        setCategoryList(categories);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCategoryClick = (categoryId) => {
+    props.setCat(categoryId);
+  };
+
+  return (
+    <div className="sidebar">
+      {categoryList.map((category) => (
+        <button key={category.id} onClick={() => handleCategoryClick(category.id)}>
+          {category.nazwa}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 export default Sidebar;
