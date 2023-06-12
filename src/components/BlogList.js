@@ -1,5 +1,4 @@
 const BlogList = ({ blogs, title, childToParent, id }) => {
-
     return (
 
         <div className="blogList" id={id}>
@@ -11,13 +10,11 @@ const BlogList = ({ blogs, title, childToParent, id }) => {
             <div className="blogPreviewDiv">
 
                 {blogs.map((blog) => {
-                    const photo = blog.photo;
-                    let src = require(`${photo}`);
+
                     return (
-                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <a className='blogPreview' key={blog.id} onClick={() => childToParent(blog)}>
                             <div className="image">
-                                <img src={src} alt={blog.title} />
+                                <img src={blog.photo} alt="Product" />
                             </div>
                             <div className="text">
                                 <div className="top">
