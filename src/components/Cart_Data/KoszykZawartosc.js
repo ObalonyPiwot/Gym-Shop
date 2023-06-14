@@ -13,7 +13,6 @@ const KoszykZawartosc = (props) => {
 
 
     useEffect(() => {
-        console.log(blogs.length);
         const sessionCookie = getCookie("SESSION-ID");
         fetch('http://localhost/getDataFromSession', {
             method: 'GET',
@@ -39,6 +38,7 @@ const KoszykZawartosc = (props) => {
                     count: parseInt(value.count, 10)
                 }));
                 setBlogs(transformed);
+                console.log("BLOG ", blogs);
             });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +58,6 @@ const KoszykZawartosc = (props) => {
     return (
         <div>
             <Navbar />
-            <Sidebar />
             <div className='cartContent'>
                 <div className='koszyk'>
                     <div>
@@ -66,7 +65,7 @@ const KoszykZawartosc = (props) => {
                             <h2>KOSZYK</h2>
                         </div>
                         <div className='list'>
-                            <CartList blogs={blogs.filter((blog) => blog.author === 'KFD')} handleBlogs={handleBlogs} />
+                            <CartList blogs={blogs} handleBlogs={handleBlogs} />
                         </div>
                     </div>
                 </div>

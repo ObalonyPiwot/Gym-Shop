@@ -66,7 +66,7 @@ export const deleteSpecificDataFromSession = (props) => {
     .then( __response => __response.text)
     .catch( __error => console.log('Error', __error))
     .then( __result => {
-        //useAlert().success("Pomyślnie usunięto produkt");
+        useAlert().success("Pomyślnie usunięto produkt");
         setTimeout( () =>{
             window.location.reload();
         }, 500)

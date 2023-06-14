@@ -201,7 +201,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -228,7 +228,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -255,7 +255,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -282,7 +282,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -423,7 +423,7 @@ public class Controller {
         }
         try {
             // Zapisz plik na serwerze
-            File destination = new File("D:/studia/studia/semestr 6/gymshop/zdjecia/" + fileName);
+            File destination = new File("C:/inetpub/wwwroot/gymShop/content/" + fileName);
             file.transferTo(destination);
             try {
                 System.out.println(sql);
@@ -465,7 +465,7 @@ public class Controller {
     @PostMapping("/getPhoto")
     public ResponseEntity<Resource> getPhoto(@RequestBody String fileName) {
         System.out.println(fileName);
-        String filePath = "D:/studia/studia/semestr 6/gymshop/zdjecia/"+fileName; // Ścieżka do pliku ze zdjęciem
+        String filePath = "C:/inetpub/wwwroot/gymShop/content/"+fileName; // Ścieżka do pliku ze zdjęciem
         Resource photo = new FileSystemResource(filePath);
         if (photo.exists()) {
             return ResponseEntity.ok()

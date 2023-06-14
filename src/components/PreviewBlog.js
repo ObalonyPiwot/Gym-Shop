@@ -18,7 +18,7 @@ function PreviewBlog({ item, childToParent }) {
 
     const currentPrice = parseFloat(item.cena).toFixed(2) * count;
 
-    function test() {
+    function addToCart() {
         if(!checkCookieExists("SESSION-ID"))
             alert.error("Brak autoryzacji");
         let validateData = JSON.stringify(item);
@@ -32,7 +32,13 @@ function PreviewBlog({ item, childToParent }) {
             body: validateData
         })
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => {
+                alert.success("Dodano do koszyka");
+                setTimeout( () => {
+                    window.location.reload();
+                    
+                }, 500 );
+            })
             .catch(error => console.log('error', error));
     }
 
@@ -72,7 +78,7 @@ function PreviewBlog({ item, childToParent }) {
                                 <p className="cena"> {currentPrice} zł</p>
 
                             </div>
-                            <button className="doKoszyka" onClick={test}>Do koszyka</button>
+                            <button className="doKoszyka" onClick={addToCart}>Do koszyka</button>
                             {/* <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button> */}
 
                         </div>
