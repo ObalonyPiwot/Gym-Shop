@@ -1,6 +1,7 @@
 package pl.gymshopspring;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
@@ -201,7 +202,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -228,7 +229,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -248,14 +249,15 @@ public class Controller {
     }
     @GetMapping("/selectProducts")
     public String selectProducts() throws SQLException {
-        String sql = "Select * from Produkty where isActive=1" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -282,7 +284,7 @@ public class Controller {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -475,5 +477,37 @@ public class Controller {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/selectUserFavourite/{userId}")
+    public String selectUserFavourite(@PathVariable("userId") String userId) throws SQLException {
+        String sql = "Select * from ULUBIONE  where IDUZYT="+userId;
+        try {
+            System.out.println(sql);
+            List<String> result = jdbc.query(sql, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return rs.getString("IDPROD");
+                }
+            });
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(result);
+            System.out.println("{\"Status\":\"success\", \"Favourite\":"+json+"}");
+            return"{\"Status\":\"success\", \"Silownie\":"+json+"}";
+        } catch (Exception e) {
+            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    @GetMapping("/addFavourite/{userId}/{prodId}")
+    public String addUserFavourite(@PathVariable("userId") String userId, @PathVariable("prodId") String prodId) throws SQLException {
+        String sql = "INSERT INTO ULUBIONE  ('"+prodId+"','"+userId+"')";
+        try {
+            System.out.println(sql);
+            jdbc.update(sql);
+            return "{\"Status\":\"success\"}";
+        } catch (Exception ex) {
+            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+        }
+    }
+
 }
 
