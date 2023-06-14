@@ -1,6 +1,7 @@
 import { getCookie } from "../../CookieFunction";
 import { useAlert } from "react-alert";
 
+
 /* function to get data from our session */
 export const getDataFromSession = () =>{
     const sessionCookie = getCookie("SESSION-ID");
@@ -38,6 +39,7 @@ export const getDataFromSession = () =>{
 *   items will delete when payment will be succesful
 */
 export const deleteDataFromSession = () =>{
+
     const sessionCookie = getCookie("SESSION-ID");
     fetch( 'http://localhost/deleteProducts',{
         method: 'GET',
@@ -66,7 +68,6 @@ export const deleteSpecificDataFromSession = (props) => {
     .then( __response => __response.text)
     .catch( __error => console.log('Error', __error))
     .then( __result => {
-        useAlert().success("Pomyślnie usunięto produkt");
         setTimeout( () =>{
             window.location.reload();
         }, 500)
