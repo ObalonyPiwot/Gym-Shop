@@ -10,11 +10,12 @@ public class Produkt {
     private String zdjecie;
     private double cena;
     private double ostCena;
+    private double ocena;
     private int idGrupy;
     private int isActive;
     private int onPromotion;
 
-    public Produkt(int id, String nazwa, String opis, String zdjecie, double cena, int idGrupy, int isActive, int onPromotion, double ostCena) {
+    public Produkt(int id, String nazwa, String opis, String zdjecie, double cena, int idGrupy, int isActive, int onPromotion, double ocena, double ostCena) {
         this.id = id;
         this.nazwa = nazwa;
         this.opis = opis;
@@ -24,9 +25,10 @@ public class Produkt {
         this.isActive = isActive;
         this.onPromotion = onPromotion;
         this.ostCena = ostCena;
+        this.ocena = ocena;
     }
-    public Produkt(int id, String nazwa, String opis, String zdjecie, double cena, int idGrupy, int isActive, int onPromotion) {
-        this(id, nazwa, opis, zdjecie, cena, idGrupy, isActive, onPromotion, 0);
+    public Produkt(int id, String nazwa, String opis, String zdjecie, double cena, int idGrupy, int isActive, int onPromotion, double ocena) {
+        this(id, nazwa, opis, zdjecie, cena, idGrupy, isActive, onPromotion, ocena, 0);
     }
     public Produkt() {
     }
@@ -94,6 +96,14 @@ public class Produkt {
 
     public void setZdjecie(String zdjecie) {
         this.zdjecie = zdjecie;
+    }
+
+    public double getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(double ocena) {
+        this.ocena = ocena;
     }
 
     public String toJSON() throws JsonProcessingException {
