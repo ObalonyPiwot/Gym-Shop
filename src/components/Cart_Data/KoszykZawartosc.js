@@ -38,15 +38,16 @@ const KoszykZawartosc = (props) => {
                     count: parseInt(value.count, 10)
                 }));
                 setBlogs(transformed);
-                console.log("BLOG ", blogs);
             });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     let totalCena = blogs.reduce((total, blog) => {
-        return (total + parseFloat(blog.cena.replace(' zł', '').replace(',', '.'))) * blog.count;
+        let cena = typeof blog.cena === 'string' ? blog.cena : blog.cena.toString();
+        return (total + parseFloat(cena.replace(' zł', '').replace(',', '.'))) * blog.count;
     }, 0).toFixed(2);
+    
     let spendCena = 9.99;
     let result = (parseFloat(totalCena) + parseFloat(spendCena)).toFixed(2);
 
@@ -58,6 +59,7 @@ const KoszykZawartosc = (props) => {
     return (
         <div>
             <Navbar />
+            <Sidebar />
             <div className='cartContent'>
                 <div className='koszyk'>
                     <div>

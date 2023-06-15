@@ -34,22 +34,22 @@ const Home = () => {
               'Content-Type': 'application/json'
             }
           });
-          const photoData = await photoResponse.blob(); 
-          const photoUrl = URL.createObjectURL(photoData);
+          // const photoData = await photoResponse.blob(); 
+          // const photoUrl = URL.createObjectURL(photoData);
+
         
           return {
             id: product.id,
             title: product.nazwa,
             body: product.opis,
             cena: product.cena,
-            photo: photoUrl,
+            photo: photoResponse,
             idGrupy: product.idGrupy,
             onPromotion: product.onPromotion,
             count: 1
           };
         });
         const productListWithPhotos = await Promise.all(productList);
-        console.log(productListWithPhotos);
         setProductData(productListWithPhotos);
         
       } catch (error) {

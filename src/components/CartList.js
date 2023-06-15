@@ -2,11 +2,13 @@
 import { FaTrash } from 'react-icons/fa';
 import React, { useState } from 'react';
 import { deleteSpecificDataFromSession } from './API_Communication/CartDataAPI';
+import { useAlert } from 'react-alert';
 
 const CartList = ({ blogs, handleBlogs }) => {
 
 
     const [count, setCount] = useState(blogs.map(blog => blog.count));
+    const alert = useAlert();
 
     const handleQuantityChange = (index, event) => {
         const newCount = [...count];
@@ -18,18 +20,22 @@ const CartList = ({ blogs, handleBlogs }) => {
         handleBlogs(newBlogs);
     };
 
+    function _showAlert(){
+        alert.success("Usunięto produkt");
+    }
+
     return (
         <div className="blogCart">
             {blogs.map((blog, index) => {
 
                 const photo = blog.photo;
-                let src = require(`${photo}`);
+                // let src = require(`${photo}`);
                 const currentPrice = (parseFloat(blog.cena) * blog.count).toFixed(2);
 
                 return (
                     <div className='CartPreview' key={blog.id}>
                         <div className="image">
-                            <img src={src} alt={blog.title} />
+                            <img src={photo} alt={blog.title} />
                         </div>
                         <div className="text">
                             <div className="top">
@@ -47,7 +53,7 @@ const CartList = ({ blogs, handleBlogs }) => {
                                 <p className="cena"> {currentPrice} zł</p>
                             </div>
                             <div className="bottom">
-                                <div className='trash TrashIcon' onClick={ () => deleteSpecificDataFromSession(blog.title)}>
+                                <div className='trash TrashIcon' onClick={ () =>{_showAlert(); deleteSpecificDataFromSession(blog.title);}}>
                                     <FaTrash />
                                 </div>
                             </div>

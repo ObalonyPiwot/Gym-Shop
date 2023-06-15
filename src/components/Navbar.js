@@ -4,6 +4,22 @@ import { getCookie, checkCookieExists } from "../CookieFunction";
 import { useState } from "react";
 
 const Navbar = () => {
+
+
+    function _fixJsonString(jsonString) {
+        jsonString = jsonString.trim().slice(1, -1);
+      
+        jsonString = jsonString.replace(/=/g, ':');
+      
+        jsonString = jsonString.replace(/'/g, '"');
+      
+        jsonString = jsonString.replace(/,(\s*})/g, '$1');
+      
+        jsonString = '{' + jsonString + '}';
+      
+        return jsonString;
+      }
+
     const [total, setTotal] = useState(0);
     useEffect(() => {
         if (checkCookieExists("SESSION-ID")) {

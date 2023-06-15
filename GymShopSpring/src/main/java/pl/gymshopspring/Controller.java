@@ -89,7 +89,6 @@ public class Controller {
     @GetMapping("/generateSaleCodes/{amount}/{discount}/{time}")
     public String generateSaleCodes(@PathVariable("amount") int amount,  @PathVariable("discount") String discount,
                                     @PathVariable("time") String time) throws SQLException {
-        System.out.println("dodawanie kodów");
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         String code ="";
         Random random = new Random();
@@ -102,7 +101,6 @@ public class Controller {
             }
             String sql = "INSERT INTO KODYRABATOWE (ID, KOD, RABAT, DataWaznosci) VALUES (KODYRABATOWEID.nextval, '"+code+"'," +
                     " "+discount+", (select sysdate+"+time+" from dual))";
-            System.out.println(sql);
             code="";
             jdbc.update(sql);
         }

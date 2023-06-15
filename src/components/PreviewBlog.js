@@ -78,7 +78,7 @@ function PreviewBlog({ item, childToParent }) {
                                 <p className="cena"> {currentPrice} zł</p>
 
                             </div>
-                            <button className="doKoszyka" onClick={addToCart}>Do koszyka</button>
+                            <button className="toCart" onClick={addToCart}>Do koszyka</button>
                             {/* <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button> */}
 
                         </div>

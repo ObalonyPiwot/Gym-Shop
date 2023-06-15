@@ -33,7 +33,7 @@ const Konto = () => {
         setLogged(isLogged);
         logOut();
         deleteCookie("SESSION-ID");
-        alert.success("dodano do koszyka");
+        alert.success("Wylogowano");
         setTimeout(() => {
             window.location.reload();
         }, 1000);
@@ -96,7 +96,7 @@ const Konto = () => {
                                 <Login onFirstTimeGoogleLoginSwitch={setFirstTimeGoogleLogin} onFormSwitch={toggleForm} onLoggedSwitch={toggleLogged} setUser={setUser} /> :
                                 <FirstTimeGoogleLogin onLoggedSwitch={toggleLogged} user={user} setUser={setUser} /> :
                             <Register onFormSwitch={toggleForm} /> :
-                        user ? <KontoView onLoggedSwitch={onLogOut} user={user} /> : null
+                        <KontoView onLoggedSwitch={onLogOut} user={user} />
                 }
             </div>
         </div>
