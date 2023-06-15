@@ -55,7 +55,10 @@ public class Controller {
     @PostMapping("/Cart/setRedisData")
     @ResponseBody
     public String setDataInSession(@RequestBody String item, HttpServletRequest request) {
+        System.out.println("Dodawania do koszyka");
         JSONObject json = new JSONObject(item);
+        json.remove("photo");
+        System.out.println(json.get("photoName").toString());
         String sessionId = request.getHeader("SESSIONID");
         SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
         if (sessionData == null) {
@@ -193,7 +196,8 @@ public class Controller {
 
     @GetMapping("/selectProducts/{selectedGroup}")
     public String selectProducts(@PathVariable("selectedGroup") String selectedGroup) throws SQLException {
-        String sql = "Select * from Produkty where IDGrupy ="+selectedGroup+" and isActive=1 and onPromotion=0" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and IDGrupy ="+selectedGroup+" GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -220,7 +224,8 @@ public class Controller {
     }
     @GetMapping("/selectProductsForSale")
     public String selectProductsForSale() throws SQLException {
-        String sql = "Select * from Produkty where isActive=1 and onPromotion=0" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and onPromotion=0 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -275,7 +280,8 @@ public class Controller {
     }
     @GetMapping("/selectNewest")
     public String selectNewest() throws SQLException {
-        String sql = "Select * from Produkty where isActive=1 and dataDodania>SYSDATE-30" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and dataDodania>SYSDATE-30 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -423,7 +429,7 @@ public class Controller {
         }
         try {
             // Zapisz plik na serwerze
-            File destination = new File("C:/inetpub/wwwroot/gymShop/content/" + fileName);
+            File destination = new File("D:/studia/studia/semestr 6/gymshop/zdjecia/" + fileName);
             file.transferTo(destination);
             try {
                 System.out.println(sql);
@@ -464,8 +470,8 @@ public class Controller {
     }*/
     @PostMapping("/getPhoto")
     public ResponseEntity<Resource> getPhoto(@RequestBody String fileName) {
-        System.out.println(fileName);
-        String filePath = "C:/inetpub/wwwroot/gymShop/content/"+fileName; // Ścieżka do pliku ze zdjęciem
+
+        String filePath = "D:/studia/studia/semestr 6/gymshop/zdjecia/"+fileName; // Ścieżka do pliku ze zdjęciem
         Resource photo = new FileSystemResource(filePath);
         if (photo.exists()) {
             return ResponseEntity.ok()
@@ -475,33 +481,62 @@ public class Controller {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/selectUserFavourite/{userId}")
-    public String selectUserFavourite(@PathVariable("userId") String userId) throws SQLException {
-        String sql = "Select * from ULUBIONE  where IDUZYT="+userId;
+    @PostMapping("/selectFavourite")
+    public String selectFavourite(HttpServletRequest request) {
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        JSONObject Ujson = new JSONObject(sessionData.getData().get("user").get("id"));
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 AND P.id IN (Select IDPROD from ULUBIONE  where IDUZYT=" + Ujson.get("id") + ") " +
+                "GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
-            List<String> result = jdbc.query(sql, new RowMapper<String>() {
+            List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
                 @Override
-                public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    return rs.getString("IDPROD");
+                public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Produkt produkt = new Produkt(rs.getInt("ID"), rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"), rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
+                    return produkt;
                 }
             });
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(result);
-            System.out.println("{\"Status\":\"success\", \"Favourite\":"+json+"}");
-            return"{\"Status\":\"success\", \"Silownie\":"+json+"}";
+            String returnProducts = "";
+            for (int i = 0; i < result.size(); i++) {
+                returnProducts += result.get(i).toJSON();
+                if (i != result.size() - 1)
+                    returnProducts += ",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Produkty\":[" + returnProducts + "]}");
+            return "{\"Status\":\"success\", \"Produkty\":[" + returnProducts + "]}";
+        } catch (EmptyResultDataAccessException e) {
+            return "{\"Status\":\"error\"}";
         } catch (Exception e) {
             return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
         }
     }
 
-    @GetMapping("/addFavourite/{userId}/{prodId}")
-    public String addUserFavourite(@PathVariable("userId") String userId, @PathVariable("prodId") String prodId) throws SQLException {
-        String sql = "INSERT INTO ULUBIONE  ('"+prodId+"','"+userId+"')";
+    @PostMapping("/addFavourite")
+    @ResponseBody
+    public String addUserFavourite(@RequestBody String item, HttpServletRequest request) {
+        JSONObject json = new JSONObject(item);
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        JSONObject Ujson = new JSONObject(sessionData.getData().get("user").get("id"));
+        String sqlCheck = "SELECT COUNT(*) FROM ULUBIONE WHERE IDUZYT = " + Ujson.get("id") + " AND IDPROD = " + json.get("id");
         try {
-            System.out.println(sql);
-            jdbc.update(sql);
-            return "{\"Status\":\"success\"}";
+            System.out.println(sqlCheck);
+            int count = jdbc.queryForObject(sqlCheck, Integer.class);
+            if(count>0) {
+                String sql = "DELETE FROM ULUBIONE  WHERE IDPROD ='" + json.get("id") + "' AND IDUZYT ='" + Ujson.get("id") + "'";
+                System.out.println(sql);
+                jdbc.update(sql);
+                return "remove";
+            }
+            else{
+                String sql = "INSERT INTO ULUBIONE  VALUES ('" + json.get("id") + "','" + Ujson.get("id") + "')";
+                System.out.println(sql);
+                jdbc.update(sql);
+                return "add";
+            }
         } catch (Exception ex) {
             return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
         }
