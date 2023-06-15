@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Koszyk from './pages/Koszyk'
 import Promocje from './pages/Promocje'
 import Nowosci from './pages/Nowosci'
+import Favourite from './pages/Ulubione';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path='/Koszyk' Component={Koszyk}/>
         <Route path='/Promocje' Component={Promocje}/>
         <Route path='/Nowosci' Component={Nowosci}/>
+        <Route path='/Ulubione' Component={Favourite}/>
       </Routes>
     </div>
   );

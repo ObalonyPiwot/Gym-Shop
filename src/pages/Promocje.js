@@ -1,27 +1,91 @@
-import { useState } from 'react'
-import ItemPromocyjny from '../components/ItemPromocyjny'
+import { useState, useEffect } from 'react'
+import BlogList from '../components/BlogList';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import PreviewBlog from '../components/PreviewBlog';
 
 const Promocje = () => {
 
-    const[blogs, setBlogs] = useState([
-        {photo: "./13.png", title: 'Kremówki Weganki 150G', cena:"2̶1̶.3̶7zł 16.99zł",  body: 'X', author: 'KFD', id: 13},
-        {photo: "./2.png", title: 'Hantle sześciokątne HEX', cena:"7̶8̶.9̶9zł 60.00zł", body: 'X', author: 'JUST7GYM', id: 2},
-        {photo: "./3.png", title: 'Uchwyt do wyciągu', cena:"7̶8̶.9̶9zł 55.99zł", body: 'X', author: 'JUST7GYM', id: 3},
-        {photo: "./5.png", title: 'SQUAT BAR', cena:"9̶4̶9̶.9̶9zł 859.99zł", body: 'X', author: 'JUST7GYM', id: 5},
-       ]);
-  
-      return ( 
-        <div>
-           <Navbar/>
-           <Sidebar/>
-           <div className='content'>  
-              {/* <BlogList blogs ={blogs} title='Suplementy'/> */}
-              <ItemPromocyjny blogs ={blogs} title='Promocje'/>
-           </div>
-        </div>
-       );
- }
+   const [productData, setProductData] = useState([{photo: "./5.png", count: 1, title: 'SQUAT BAR', cena:"949.99 zł", body: 'X', author: 'JUST7GYM', id: 5}]);
+   const [groupList, setGroupList] = useState([]);
+   const [cat, setCat] = useState(1);
+       useEffect(() => {
+         const fetchData = async () => {
+            try {
+              const response = await fetch('http://localhost/selectProductsForSale');
+              const data = await response.json();
+              const productList = data.Produkty.map(async (product) => {
+                const photoResponse = await fetch('http://localhost/getPhoto', {
+                  method: 'POST',
+                  body: product.zdjecie, 
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                });
+                const photoData = await photoResponse.blob(); 
+                const photoUrl = URL.createObjectURL(photoData);
+              
+                return {
+                  id: product.id,
+                  title: product.nazwa,
+                  body: product.opis,
+                  cena: product.cena,
+                  photo: photoUrl,
+                  idGrupy: product.idGrupy,
+                  onPromotion: product.onPromotion,
+                  count: 1
+                };
+              });
+              const productListWithPhotos = await Promise.all(productList);
+              console.log(productListWithPhotos);
+              setProductData(productListWithPhotos);
+    
+              await fetch("http://localhost/selectGroups")
+              .then((response) => response.json())
+              .then((data) => {
+               const groups = data.Grupy;
+               setGroupList(groups);
+                
+              });
+              
+            } catch (error) {
+              console.error('Error:', error);
+            }
+          };
+      
+          fetchData();
+          
+        }, []);
+        const [data, setData] = useState('');
+        const childToParent = (childData) => {
+         setData(childData);
+        }
+      let okno;
+      if(data){
+         okno = <PreviewBlog item={data} childToParent={childToParent}/>
+      } else {
+         okno = <></>;
+      }
+        return ( 
+         <div>
+            {okno}
+            <Navbar/>
+            <Sidebar setCat={setCat}/>
+            <div className='content'>  
+            {groupList
+               .filter((group) => group.idKat === cat)
+               .map((group) => (
+                  <BlogList
+                  key={group.id}
+                  blogs={productData.filter((product) => product.idGrupy === group.id)}
+                  id={group.nazwa}
+                  title={group.nazwa}
+                  childToParent={childToParent}
+               />
+            ))}
+            </div>
+         </div>
+        );
+   };
  
  export default Promocje;

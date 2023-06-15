@@ -72,6 +72,7 @@ const Navbar = () => {
             />
             <div className="links">
                 <a href="/">Home</a>
+                <a href="/Ulubione">Ulubione</a>
                 <a href="/Koszyk">Koszyk</a>
                 <a href="/Promocje">Promocje</a>
                 <a href="/Nowosci">Nowości</a>

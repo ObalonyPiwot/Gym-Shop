@@ -41,6 +41,35 @@ function PreviewBlog({ item, childToParent }) {
             })
             .catch(error => console.log('error', error));
     }
+    function addToFav() {
+        if(!checkCookieExists("SESSION-ID"))
+            alert.error("Brak autoryzacji");
+        let validateData = JSON.stringify(item);
+        const sessionCookie = getCookie("SESSION-ID");
+        fetch('http://localhost/addFavourite', {
+            method: 'POST',
+            headers: {
+                'SESSIONID': sessionCookie,
+                'Content-Type': 'application/json'
+            },
+            body: validateData
+        })
+            .then(response => response.text())
+            .then(result => {
+                if(result==='add')
+                    alert.success("Dodano do ulubionych");
+                if(result==='remove')
+                    alert.error("Usunięto z ulubionych");
+                const timer = setTimeout(() => {
+                    alert.removeAll();
+                }, 1000);
+            
+                return () => {
+                    clearTimeout(timer);
+                };
+            })
+            .catch(error => console.log('error', error));
+    }
 
     return (
         <div className="inspectBlog">
@@ -51,7 +80,7 @@ function PreviewBlog({ item, childToParent }) {
                 </div>
                 <div className="previewContent">
                     <div className='tekst'>
-                        <h2>{item.title}</h2>
+                        <h2>{item.title}</h2>  <button className="toCart" onClick={addToFav}>Ulubione</button>
                         <div className="zamkniecie" onClick={() => childToParent(null)}>
                             <img src={exit} alt="exit" />
                         </div>
@@ -82,6 +111,7 @@ function PreviewBlog({ item, childToParent }) {
                             {/* <button className="Otworz dane z serwera" onClick={get}>Pobierz rzeczy </button> */}
 
                         </div>
+                        Ocena: {item.ocena}/5.0
 
                     </div>
 

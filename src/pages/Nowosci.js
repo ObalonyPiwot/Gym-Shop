@@ -31,8 +31,10 @@ const Nowosci = () => {
                   body: product.opis,
                   cena: product.cena,
                   photo: photoUrl,
+                  photoName: product.zdjecie,
                   idGrupy: product.idGrupy,
                   onPromotion: product.onPromotion,
+                  ocena: product.ocena,
                   count: 1
                 };
               });

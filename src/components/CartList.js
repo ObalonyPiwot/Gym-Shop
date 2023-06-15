@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { FaTrash } from 'react-icons/fa';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { deleteSpecificDataFromSession } from './API_Communication/CartDataAPI';
 import { useAlert } from 'react-alert';
 
@@ -24,18 +24,16 @@ const CartList = ({ blogs, handleBlogs }) => {
         alert.success("Usunięto produkt");
     }
 
-    return (
+ return (
         <div className="blogCart">
             {blogs.map((blog, index) => {
-
-                const photo = blog.photo;
                 // let src = require(`${photo}`);
                 const currentPrice = (parseFloat(blog.cena) * blog.count).toFixed(2);
 
                 return (
                     <div className='CartPreview' key={blog.id}>
                         <div className="image">
-                            <img src={photo} alt={blog.title} />
+                            <img src={blog.photo} alt={blog.title} />
                         </div>
                         <div className="text">
                             <div className="top">

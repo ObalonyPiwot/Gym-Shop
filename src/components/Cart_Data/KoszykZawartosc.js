@@ -29,15 +29,32 @@ const KoszykZawartosc = (props) => {
                     .replace(/'/g, '"');
                 const json = JSON.parse(correctedString);
                 const transformed = Object.entries(json.collections).map(([key, value]) => ({
-                    photo: value.photo,
                     title: value.title,
                     cena: value.cena,
                     body: value.body,
                     author: value.author,
                     id: value.id,
+                    photoName: value.photoName,
                     count: parseInt(value.count, 10)
                 }));
-                setBlogs(transformed);
+                Promise.all(transformed.map(async (blog, index) => {
+                    console.log(blog.photoName);
+                    const photoResponse = await fetch('http://localhost/getPhoto', {
+                      method: 'POST',
+                      body: blog.photoName,
+                      headers: {
+                        'Content-Type': 'application/json'
+                      }
+                    });
+                    const photoData = await photoResponse.blob();
+                    const photoUrl = URL.createObjectURL(photoData);
+                    return { ...blog, photo: photoUrl };
+                  })).then(updatedBlogs => {
+                    setBlogs(updatedBlogs);
+                    console.log(updatedBlogs);
+                  });
+
+                
             });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,15 +68,9 @@ const KoszykZawartosc = (props) => {
     let spendCena = 9.99;
     let result = (parseFloat(totalCena) + parseFloat(spendCena)).toFixed(2);
 
-    const handleBlogs = (newBlogs) => {
-        setBlogs(newBlogs);
-    };
-
-
     return (
         <div>
             <Navbar />
-            <Sidebar />
             <div className='cartContent'>
                 <div className='koszyk'>
                     <div>
@@ -67,14 +78,14 @@ const KoszykZawartosc = (props) => {
                             <h2>KOSZYK</h2>
                         </div>
                         <div className='list'>
-                            <CartList blogs={blogs} handleBlogs={handleBlogs} />
+                            <CartList blogs={blogs} handleBlogs={setBlogs} />
                         </div>
                     </div>
                 </div>
                 <div className='paying'>
                     <div className='payingMainDivPrice'>
                         <div className='payingDivPrice'>
-                            <h2>{blogs.reduce((acc, curr) => acc + curr.count, 0)} szt.</h2>
+                            <h2>{blogs.reduce((acc, curr) => parseInt(acc) +parseInt(curr.count), 0)} szt.</h2>
                             <h2> {totalCena} zł</h2>
                         </div>
                         <div className='payingDivPrice'>
@@ -88,12 +99,13 @@ const KoszykZawartosc = (props) => {
                     </div>
                     {blogs.length === 0 
                         ?<button onClick={() => alert.error("Brak przedmiotów")}>Idź do kasy</button> 
-                        : <button onClick={() => { props.initProducts(blogs, result, blogs.reduce((acc, curr) => acc + curr.count, 0)); props.onFormSwitch('payment')}}>Idź do kasy</button> }
+                        : <button onClick={() => { props.initProducts(blogs, result, blogs.reduce((acc, curr) => parseInt(acc) +parseInt(curr.count), 0)); props.onFormSwitch('payment')}}>Idź do kasy</button> }
 
                 </div>
             </div>
         </div>
-    );
+    ); 
 }
+    
 
 export default KoszykZawartosc;
