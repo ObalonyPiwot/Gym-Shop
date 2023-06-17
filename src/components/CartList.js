@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { FaTrash } from 'react-icons/fa';
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { deleteSpecificDataFromSession } from './API_Communication/CartDataAPI';
 import { useAlert } from 'react-alert';
 

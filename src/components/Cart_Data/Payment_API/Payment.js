@@ -18,9 +18,11 @@ const Payment = (props) => {
         city: '',
         phone: ''
     })
+    const [promoCode, setDiscountCode] = useState ('');
     const [errors, setErrors] = useState({});
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const _alert = useAlert();
+    const [isPromoCodeVisible, setPromoCodeVisible] = useState(false);
 
     // - for move to home after succesful payment
     const _navigate = useNavigate();
@@ -36,6 +38,15 @@ const Payment = (props) => {
         }));
         console.log(paymentData);
     }
+
+    const __handleInputDiscountChange = (_event_) =>{
+        setDiscountCode(_event_.target.value);
+    }
+
+    const togglePromoCode = () => {
+        setPromoCodeVisible(!isPromoCodeVisible);
+    };
+
     async function handleToken(token) {
         fetch('http://localhost/api/payment/charge', {
             method: 'POST',
@@ -54,7 +65,7 @@ const Payment = (props) => {
             .then(response => {
                 if (response.ok) {
                     _alert.success("Płatność została pomyślnie przetworzona");
-                    setTimeout( () => {
+                    setTimeout(() => {
                         deleteDataFromSession();
                         _navigate('/');
                     }, 500)
@@ -71,7 +82,7 @@ const Payment = (props) => {
 
         const validationErrors = {};
         let hasErrors = false;
-        
+
         Object.keys(paymentData).forEach((field) => {
             if (paymentData[field].trim() === '') {
                 validationErrors[field] = `Pole ${field.charAt(0).toUpperCase() + field.slice(1)} jest wymagane`;
@@ -83,11 +94,28 @@ const Payment = (props) => {
             setErrors(validationErrors);
             return;
         }
-        setErrors( {});
+        setErrors({});
         setIsButtonDisabled(false);
         console.log(paymentData);
 
     }
+
+    const handlePromoCode = (e) =>{
+        fetch("http://localhost/discountCode/checkIfExists/"+promoCode, {
+            method: 'POST'
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if(!isNaN(data))
+            {
+                props.setTotal(data);
+                togglePromoCode();
+            }
+        })
+        e.preventDefault();
+
+    }
+
     return (
         <div className="App">
             <Navbar />
@@ -168,6 +196,28 @@ const Payment = (props) => {
                         <h2>{props.products.result} zł</h2>
                     </div>
                     <hr></hr>
+                    <div className="categoryInput center discountCode">
+                        <a href="#" onClick={togglePromoCode}>
+                            {isPromoCodeVisible ? 'Zamknij' : 'Masz kod rabatowy?'}
+                        </a>
+                    </div>
+
+                    {isPromoCodeVisible && (
+                        <div className="promo-code logging" id="promo-code">
+                            <div className="form-Input">
+                                <input
+                                    className="promo-input"
+                                    type="text"
+                                    name="discount_name"
+                                    placeholder="Kod rabatowy"
+                                    onChange={__handleInputDiscountChange}
+                                />
+                                <button type="submit" className="btnPromo" onClick={handlePromoCode}>
+                                    Dodaj
+                                </button>
+                            </div>
+                        </div>
+                    )}
                     <div className='categoryInput payButton'>
                         <Stripe
                             disabled={isButtonDisabled}

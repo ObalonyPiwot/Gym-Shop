@@ -22,11 +22,19 @@ const Koszyk = () => {
             count: count,
         });
     }
+
+    const setTotalResut = (data) => {
+        setBlogs( e => ({
+            ...e,
+            result : ((100 - data)* 0.01 * blogs.result).toFixed(2)
+        }));
+    }
+
    return ( 
     
     <div>
     {
-        currentForm === "cart" ? <Cart onFormSwitch = {toggleForm} initProducts = {setProducts} /> : <Payment onFormSwitch = {toggleForm} products = {blogs}/>
+        currentForm === "cart" ? <Cart onFormSwitch = {toggleForm} initProducts = {setProducts} /> : <Payment onFormSwitch = {toggleForm} products = {blogs}  setTotal={setTotalResut}/>
     }
     </div>
     );

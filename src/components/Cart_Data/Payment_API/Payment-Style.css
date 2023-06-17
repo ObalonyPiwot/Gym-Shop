@@ -77,3 +77,35 @@ h2{
 .error-message{
     color: red;
 }
+
+.discountCode{
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.discountCode a {
+    color: #be9e44;
+    text-decoration: none;   
+}
+
+.discountCode a:hover{
+    color: #b08309;
+}
+
+
+.promo-code{
+    display: flex;
+}
+
+.form-Input{
+    display: flex;
+    align-items: center;
+}
+
+.btnPromo {
+    width: 60% !important;
+}
+
+.btnPromo, .promo-input{
+    margin-top: 0 !important;
+}

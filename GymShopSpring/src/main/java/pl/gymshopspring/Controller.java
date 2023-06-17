@@ -429,7 +429,7 @@ public class Controller {
         }
         try {
             // Zapisz plik na serwerze
-            File destination = new File("D:/studia/studia/semestr 6/gymshop/zdjecia/" + fileName);
+            File destination = new File("C:/inetpub/wwwroot/gymShop/content/" + fileName);
             file.transferTo(destination);
             try {
                 System.out.println(sql);
@@ -471,7 +471,7 @@ public class Controller {
     @PostMapping("/getPhoto")
     public ResponseEntity<Resource> getPhoto(@RequestBody String fileName) {
 
-        String filePath = "D:/studia/studia/semestr 6/gymshop/zdjecia/"+fileName; // Ścieżka do pliku ze zdjęciem
+        String filePath = "C:/inetpub/wwwroot/gymShop/content/"+fileName; // Ścieżka do pliku ze zdjęciem
         Resource photo = new FileSystemResource(filePath);
         if (photo.exists()) {
             return ResponseEntity.ok()

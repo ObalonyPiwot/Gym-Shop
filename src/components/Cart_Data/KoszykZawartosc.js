@@ -1,5 +1,4 @@
 import Navbar from '../Navbar';
-import Sidebar from '../Sidebar';
 import CartList from '../CartList';
 import { useState, useEffect } from 'react'
 import { getCookie } from "../../CookieFunction";
@@ -59,6 +58,8 @@ const KoszykZawartosc = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
 
     let totalCena = blogs.reduce((total, blog) => {
         let cena = typeof blog.cena === 'string' ? blog.cena : blog.cena.toString();

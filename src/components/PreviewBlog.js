@@ -20,7 +20,10 @@ function PreviewBlog({ item, childToParent }) {
 
     function addToCart() {
         if(!checkCookieExists("SESSION-ID"))
+        {
             alert.error("Brak autoryzacji");
+            return;
+        }
         let validateData = JSON.stringify(item);
         const sessionCookie = getCookie("SESSION-ID");
         fetch('http://localhost/Cart/setRedisData', {

@@ -30,6 +30,7 @@ const Home = () => {
                  body: product.opis,
                  cena: product.cena,
                  photo: photoUrl,
+                 photoName: product.zdjecie,
                  idGrupy: product.idGrupy,
                  onPromotion: product.onPromotion,
                  count: 1
