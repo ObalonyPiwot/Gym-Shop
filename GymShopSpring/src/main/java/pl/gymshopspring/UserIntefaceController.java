@@ -7,6 +7,9 @@ package pl.gymshopspring;
         import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.dao.EmptyResultDataAccessException;
         import org.springframework.data.redis.core.RedisTemplate;
+        import org.springframework.http.HttpHeaders;
+        import org.springframework.http.HttpStatus;
+        import org.springframework.http.MediaType;
         import org.springframework.http.ResponseEntity;
         import org.springframework.jdbc.core.JdbcTemplate;
         import org.springframework.session.SessionRepository;
@@ -30,7 +33,7 @@ public class UserIntefaceController {
     private JdbcTemplate jdbc;
 
     @GetMapping("/login/{email}/{password}")
-    public String login(@PathVariable("email") String email, @PathVariable("password") String password) throws SQLException {
+    public ResponseEntity<String> login(@PathVariable("email") String email, @PathVariable("password") String password) throws SQLException {
         String sql = "Select haslo from uzytkownik where email = '" + email + "'";
         try {
             String pass = jdbc.queryForObject(sql, new Object[]{}, String.class);
@@ -40,12 +43,19 @@ public class UserIntefaceController {
                     Uzytkownik u = new Uzytkownik(rs);
                     return u;
                 });
-                return "{\"Status\":\"success\",\"User\":" + uzytkownik.toJSON() + "}";
-            } else return "{\"Status\":\"error\",\"Message\":\"Wrong password\"}";
-        } catch (EmptyResultDataAccessException e) {
-            return "{\"Status\":\"error\",\"Message\":\"User not found\"}";
+                String response = "{\"Status\":\"success\", \"User\":" + uzytkownik.toJSON() + "}";
+                System.out.println(response);
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            } else return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"Wrong password\"}");
+        }
+        catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"User not found\"}");
         } catch (Exception e) {
-            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}");
         }
     }
 
@@ -69,7 +79,7 @@ public class UserIntefaceController {
     }
 
     @GetMapping("/googleLogin/{email}")
-    public String googleLogin(@PathVariable("email") String email) throws SQLException {
+    public ResponseEntity<String> googleLogin(@PathVariable("email") String email) throws SQLException {
         String sqlCheck = "SELECT count(*) FROM uzytkownik where email = '" + email + "' group by email";
         try {
             jdbc.queryForObject(sqlCheck, Integer.class);
@@ -78,12 +88,18 @@ public class UserIntefaceController {
                 Uzytkownik u = new Uzytkownik(rs);
                 return u;
             });
-            return "{\"Status\":\"success\",\"User\":" + uzytkownik.toJSON() + "}";
+            String response = "{\"Status\":\"success\", \"User\":" + uzytkownik.toJSON() + "}";
+            System.out.println(response);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             try {
-                return "{\"Status\":\"firstTime\"}";
+                return ResponseEntity.ok("{\"Status\":\"firstTime\"}");
             } catch (Exception ex) {
-                return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+                return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}");
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

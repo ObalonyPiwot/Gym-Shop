@@ -1,9 +1,6 @@
 package pl.gymshopspring;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -11,23 +8,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.session.SessionRepository;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 @RestController
 @CrossOrigin
 public class Controller {
@@ -39,7 +36,7 @@ public class Controller {
 
 
     @Autowired
-    private JdbcTemplate jdbc;
+    public JdbcTemplate jdbc;
 
     @GetMapping("/test")
     public String registration() throws SQLException {
@@ -140,7 +137,7 @@ public class Controller {
         }
     }
     @GetMapping("/selectCategories")
-    public String selectCategories() throws SQLException {
+    public ResponseEntity<String> selectCategories() throws SQLException {
         String sql = "Select * from KATEGORIE";
         try {
             System.out.println(sql);
@@ -157,16 +154,21 @@ public class Controller {
                 if(i!=result.size()-1)
                     returnKat +=",";
             }
-            System.out.println("{\"Status\":\"success\", \"Kategorie\":["+returnKat+"]}");
-            return"{\"Status\":\"success\", \"Kategorie\":["+returnKat+"]}";
+            String response = "{\"Status\":\"success\", \"Kategorie\":[" + returnKat + "]}";
+            System.out.println(response);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
-            return "{\"Status\":\"error\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\"}");
         } catch (Exception e) {
-            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}");
         }
     }
     @GetMapping("/selectGroups")
-    public String selectGroups() throws SQLException {
+    public ResponseEntity<String> selectGroups() throws SQLException {
         String sql = "Select * from Grupy";
         try {
             System.out.println(sql);
@@ -183,12 +185,17 @@ public class Controller {
                 if(i!=result.size()-1)
                     returnGroups +=",";
             }
-            System.out.println("{\"Status\":\"success\", \"Grupy\":["+returnGroups+"]}");
-            return"{\"Status\":\"success\", \"Grupy\":["+returnGroups+"]}";
+            String response = "{\"Status\":\"success\", \"Grupy\":[" + returnGroups + "]}";
+            System.out.println(response);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
-            return "{\"Status\":\"error\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\"}");
         } catch (Exception e) {
-            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}");
         }
     }
 
@@ -225,7 +232,7 @@ public class Controller {
     @GetMapping("/selectProductsForSale")
     public String selectProductsForSale() throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 and onPromotion=0 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 and onPromotion=1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
