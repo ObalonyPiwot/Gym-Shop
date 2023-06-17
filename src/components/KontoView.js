@@ -6,10 +6,17 @@ import Favourite from "../components/Account/Favourite";
 import Complaints from "../components/Account/Complaints";
 import AdminView from "../components/Account/AdminView";
 import Firms from "../components/Account/Firms";
+import { useEffect } from 'react';
+import { setCookie } from "../CookieFunction";
 
 const KontoView = (props) => {
     const [user, setUser] = useState(props.user);
     const [action, setAction] = useState(0);
+
+    useEffect(() =>{
+        console.log(JSON.stringify(props.user));
+        setCookie("USER_DATA", JSON.stringify(props.user), 1);
+    })
     return ( 
         <>
         {action===0 && (

@@ -33,6 +33,7 @@ const Konto = () => {
         setLogged(isLogged);
         logOut();
         deleteCookie("SESSION-ID");
+        deleteCookie("USER_DATA");
         alert.success("Wylogowano");
         setTimeout(() => {
             window.location.reload();
