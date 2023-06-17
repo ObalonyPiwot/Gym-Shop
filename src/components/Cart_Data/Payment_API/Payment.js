@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useNavigate } from 'react-router-dom';
 import { deleteDataFromSession } from '../../API_Communication/CartDataAPI';
+import { getCookie } from '../../../CookieFunction';
 
 const Payment = (props) => {
     const [selectedOption, setSelectedOption] = useState('dhl');
@@ -59,7 +60,8 @@ const Payment = (props) => {
                 email: 'example@example.com',
                 currency: 'pln',
                 name: 'Example Name',
-                description: 'Example Description'
+                description: 'Example Description',
+                userData: getCookie("USER_DATA")
             })
         })
             .then(response => {
