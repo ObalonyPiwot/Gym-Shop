@@ -56,12 +56,14 @@ create table transakcje(
     ID numeric primary key,
     IDProd numeric,
     IDUzyt numeric,
+dane NVARCHAR2(1024),
     Data DATE,
     Cena float
 );
 create table daneTransakcji(
     ID numeric primary key,
     IDTransakcji numeric,
+dane NVARCHAR2(1024),
     czySukces char(1) default 'F',
     CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
 );
@@ -176,10 +178,6 @@ create table serwisy (
     start with 1
     increment by 1;
       Create sequence grupyID
-    minvalue 0
-    start with 1
-    increment by 1;
-      Create sequence typyID
     minvalue 0
     start with 1
     increment by 1;
