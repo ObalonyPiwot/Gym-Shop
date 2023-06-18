@@ -58,6 +58,7 @@ create table transakcje(
     dane NVARCHAR2(1024),
     Data DATE,
     Cena float,
+    Ilosc numeric,
     czySukces char(1) default 'F',
     CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
 );

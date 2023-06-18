@@ -76,7 +76,7 @@ export const deleteSpecificDataFromSession = (props) => {
 /*
 * Function to call request that insert data in transaction table
 */
-export const insertDataTransaction = (succes, amount) => {
+export const insertDataTransaction = (succes, amount, total) => {
     fetch('http://localhost/api/payment/insertDatabase', {
         method: 'POST',
         headers: {
@@ -86,7 +86,8 @@ export const insertDataTransaction = (succes, amount) => {
             userData: getCookie("USER_DATA"),
             userCart: getCookie("USER_CART"),
             succes: succes,
-            amount: amount
+            amount: amount,
+            total: total
         })
     })
         .then(response => {

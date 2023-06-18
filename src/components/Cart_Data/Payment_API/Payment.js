@@ -67,13 +67,13 @@ const Payment = (props) => {
             .then(response => {
                 if (response.ok) {
                     _alert.success("Płatność została pomyślnie przetworzona");
-                    insertDataTransaction("T", props.products.result);
+                    insertDataTransaction("T", props.products.result, props.products.count);
                     setTimeout(() => {
                         deleteDataFromSession();
                         _navigate('/');
                     }, 500)
                 } else {
-                    insertDataTransaction("F", props.products.result);
+                    insertDataTransaction("F", props.products.result, props.products.count);
                     throw new Error('Wystąpił błąd podczas przetwarzania płatności.');
                 }
             })

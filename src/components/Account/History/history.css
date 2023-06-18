@@ -1,0 +1,21 @@
+.CartPreview{
+    width: auto !important;
+}
+
+.historyPreview{
+    width: 100%;
+
+}
+
+.tableHistory{
+    text-align: center;
+}
+
+.link{
+    text-decoration: none;
+    color: #be9e44;
+}
+
+.link:hover{
+    color: #bca66a;
+}

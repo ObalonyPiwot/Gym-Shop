@@ -37,7 +37,7 @@ public class PaymentGatewayController {
         JSONObject json = new JSONObject(bodyData);
         JSONObject userData = new JSONObject(json.get("userData").toString());
         System.out.println(userData);
-        String sql = " INSERT INTO TRANSAKCJE VALUES (transakcjeID.nextVal, '"+userData.get("id")+"', '"+json.get("userCart").toString()+"', sysdate , "+json.get("amount")+", '"+json.get("succes") +"' )";
+        String sql = " INSERT INTO TRANSAKCJE VALUES (transakcjeID.nextVal, '"+userData.get("id")+"', '"+json.get("userCart").toString()+"', sysdate , "+json.get("amount")+", '"+json.get("total")+"','"+json.get("succes") +"' )";
         System.out.println("TEST SQL  "+sql);
         jdbc.update(sql);
         return "sukces";
@@ -45,24 +45,25 @@ public class PaymentGatewayController {
 
     @PostMapping("/getTransactionHistory")
     public String getTransactionHistory(@RequestHeader(value="userID") int userID) throws Exception {
-        String sql = "Select Dane, Cena from Transakcje where IDUzyt="+userID;
+        String sql = "Select * from Transakcje where IDUzyt="+userID;
 
         try {
             List<Transaction> result = jdbc.query(sql, new RowMapper<Transaction>() {
                 @Override
                 public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Transaction transaction = new Transaction(rs.getString("Dane"), rs.getDouble("Cena"));
+                    Transaction transaction = new Transaction(rs.getInt("id"), rs.getString("Data"),rs.getString("Dane"), rs.getDouble("Cena"), rs.getInt("ilosc"), rs.getString("czySukces"));
                     return transaction;
                 }
             });
+
             String returnProducts ="";
             for(int i=0;i<result.size();i++) {
                 returnProducts += result.get(i).toJSON();
                 if(i!=result.size()-1)
                     returnProducts +=",";
             }
-            System.out.println("{\"Status\":\"success\", \"Transakcje\":["+returnProducts+"]}");
-            return"{\"Status\":\"success\", \"Produkty\":["+returnProducts+"]}";
+            System.out.println("{\"TEEEEEEESSSSSTTTTTT\":\"success\", \"Transakcje\":["+returnProducts+"]}");
+            return"{\"Status\":\"success\", \"Transakcje\":["+returnProducts+"]}";
         } catch (EmptyResultDataAccessException e) {
             return "{\"Status\":\"error\"}";
         } catch (Exception e) {
