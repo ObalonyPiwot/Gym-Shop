@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
+import { getDataTransaction } from '../API_Communication/CartDataAPI';
 
 
 const History = (props) => {
+
+    useEffect( ()=>{
+        getDataTransaction();
+    }, [])      
    
     return ( 
         <>

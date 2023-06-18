@@ -1,7 +1,7 @@
 import Navbar from '../Navbar';
 import CartList from '../CartList';
 import { useState, useEffect } from 'react'
-import { getCookie } from "../../CookieFunction";
+import { getCookie, setCookie } from "../../CookieFunction";
 import { useAlert } from "react-alert";
 import './cart.css';
 
@@ -50,6 +50,7 @@ const KoszykZawartosc = (props) => {
                     return { ...blog, photo: photoUrl };
                   })).then(updatedBlogs => {
                     setBlogs(updatedBlogs);
+                    setCookie("USER_CART", JSON.stringify(updatedBlogs), 1);
                     console.log(updatedBlogs);
                   });
 

@@ -5,7 +5,7 @@ import './Payment-Style.css';
 import { useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useNavigate } from 'react-router-dom';
-import { deleteDataFromSession } from '../../API_Communication/CartDataAPI';
+import { deleteDataFromSession, insertDataTransaction } from '../../API_Communication/CartDataAPI';
 import { getCookie } from '../../../CookieFunction';
 
 const Payment = (props) => {
@@ -67,11 +67,13 @@ const Payment = (props) => {
             .then(response => {
                 if (response.ok) {
                     _alert.success("Płatność została pomyślnie przetworzona");
+                    insertDataTransaction("T", props.products.result);
                     setTimeout(() => {
                         deleteDataFromSession();
                         _navigate('/');
                     }, 500)
                 } else {
+                    insertDataTransaction("F", props.products.result);
                     throw new Error('Wystąpił błąd podczas przetwarzania płatności.');
                 }
             })

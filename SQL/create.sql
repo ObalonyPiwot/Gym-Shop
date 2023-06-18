@@ -54,16 +54,10 @@ create table produkty(
 
 create table transakcje(
     ID numeric primary key,
-    IDProd numeric,
     IDUzyt numeric,
-dane NVARCHAR2(1024),
+    dane NVARCHAR2(1024),
     Data DATE,
-    Cena float
-);
-create table daneTransakcji(
-    ID numeric primary key,
-    IDTransakcji numeric,
-dane NVARCHAR2(1024),
+    Cena float,
     czySukces char(1) default 'F',
     CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
 );
