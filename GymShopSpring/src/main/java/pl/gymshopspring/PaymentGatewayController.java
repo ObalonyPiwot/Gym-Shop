@@ -48,8 +48,21 @@ public class PaymentGatewayController {
         String sql = "Select Dane, Cena from Transakcje where IDUzyt="+userID;
 
         try {
-            String dane = jdbc.queryForObject(sql, String.class);
-            return dane;
+            List<Transaction> result = jdbc.query(sql, new RowMapper<Transaction>() {
+                @Override
+                public Transaction mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Transaction transaction = new Transaction(rs.getString("Dane"), rs.getDouble("Cena"));
+                    return transaction;
+                }
+            });
+            String returnProducts ="";
+            for(int i=0;i<result.size();i++) {
+                returnProducts += result.get(i).toJSON();
+                if(i!=result.size()-1)
+                    returnProducts +=",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Transakcje\":["+returnProducts+"]}");
+            return"{\"Status\":\"success\", \"Produkty\":["+returnProducts+"]}";
         } catch (EmptyResultDataAccessException e) {
             return "{\"Status\":\"error\"}";
         } catch (Exception e) {
