@@ -1,25 +1,30 @@
 package pl.gymshopspring;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.session.SessionRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-
 @RestController
 @CrossOrigin
 public class Controller {
@@ -31,7 +36,7 @@ public class Controller {
 
 
     @Autowired
-    private JdbcTemplate jdbc;
+    public JdbcTemplate jdbc;
 
     @GetMapping("/test")
     public String registration() throws SQLException {
@@ -47,7 +52,10 @@ public class Controller {
     @PostMapping("/Cart/setRedisData")
     @ResponseBody
     public String setDataInSession(@RequestBody String item, HttpServletRequest request) {
+        System.out.println("Dodawania do koszyka");
         JSONObject json = new JSONObject(item);
+        json.remove("photo");
+        System.out.println(json.get("photoName").toString());
         String sessionId = request.getHeader("SESSIONID");
         SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
         if (sessionData == null) {
@@ -81,7 +89,6 @@ public class Controller {
     @GetMapping("/generateSaleCodes/{amount}/{discount}/{time}")
     public String generateSaleCodes(@PathVariable("amount") int amount,  @PathVariable("discount") String discount,
                                     @PathVariable("time") String time) throws SQLException {
-        System.out.println("dodawanie kodów");
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         String code ="";
         Random random = new Random();
@@ -94,7 +101,6 @@ public class Controller {
             }
             String sql = "INSERT INTO KODYRABATOWE (ID, KOD, RABAT, DataWaznosci) VALUES (KODYRABATOWEID.nextval, '"+code+"'," +
                     " "+discount+", (select sysdate+"+time+" from dual))";
-            System.out.println(sql);
             code="";
             jdbc.update(sql);
         }
@@ -131,7 +137,7 @@ public class Controller {
         }
     }
     @GetMapping("/selectCategories")
-    public String selectCategories() throws SQLException {
+    public ResponseEntity<String> selectCategories() throws SQLException {
         String sql = "Select * from KATEGORIE";
         try {
             System.out.println(sql);
@@ -148,16 +154,21 @@ public class Controller {
                 if(i!=result.size()-1)
                     returnKat +=",";
             }
-            System.out.println("{\"Status\":\"success\", \"Kategorie\":["+returnKat+"]}");
-            return"{\"Status\":\"success\", \"Kategorie\":["+returnKat+"]}";
+            String response = "{\"Status\":\"success\", \"Kategorie\":[" + returnKat + "]}";
+            System.out.println(response);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
-            return "{\"Status\":\"error\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\"}");
         } catch (Exception e) {
-            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}");
         }
     }
     @GetMapping("/selectGroups")
-    public String selectGroups() throws SQLException {
+    public ResponseEntity<String> selectGroups() throws SQLException {
         String sql = "Select * from Grupy";
         try {
             System.out.println(sql);
@@ -174,40 +185,33 @@ public class Controller {
                 if(i!=result.size()-1)
                     returnGroups +=",";
             }
-            System.out.println("{\"Status\":\"success\", \"Grupy\":["+returnGroups+"]}");
-            return"{\"Status\":\"success\", \"Grupy\":["+returnGroups+"]}";
+            String response = "{\"Status\":\"success\", \"Grupy\":[" + returnGroups + "]}";
+            System.out.println(response);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
-            return "{\"Status\":\"error\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\"}");
         } catch (Exception e) {
-            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+            return ResponseEntity.ok("{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}");
         }
     }
 
-    @GetMapping("/insertProduct/{productName}/{productDescription}/{productPrice}/{selectedGroup}")
-    public String insertProduct(@PathVariable("productName") String productName,
-                                @PathVariable("productDescription") String productDescription,@PathVariable("productPrice") String productPrice,
-                                @PathVariable("selectedGroup") String selectedGroup) throws SQLException {
-        String sql = "INSERT INTO produkty(ID, NAZWA, OPIS, CENA, IDGRUPY) VALUES(PRODUKTYID.nextVal, '"+productName+"','"+productDescription+"','"+productPrice+"','"+selectedGroup+"')" ;
-        try {
-            System.out.println(sql);
-            jdbc.update(sql);
-            return "{\"Status\":\"success\"}";
-        } catch (Exception ex) {
-            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
-        }
 
-    }
 
     @GetMapping("/selectProducts/{selectedGroup}")
     public String selectProducts(@PathVariable("selectedGroup") String selectedGroup) throws SQLException {
-        String sql = "Select * from Produkty where IDGrupy ="+selectedGroup+" and isActive=1 and onPromotion=0" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and IDGrupy ="+selectedGroup+" GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -227,14 +231,15 @@ public class Controller {
     }
     @GetMapping("/selectProductsForSale")
     public String selectProductsForSale() throws SQLException {
-        String sql = "Select * from Produkty where isActive=1 and onPromotion=0" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and onPromotion=1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -254,14 +259,43 @@ public class Controller {
     }
     @GetMapping("/selectProducts")
     public String selectProducts() throws SQLException {
-        String sql = "Select * from Produkty where isActive=1" ;
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
                 @Override
                 public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"),
-                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"));
+                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
+                    return produkt;
+                }
+            });
+            String returnProducts ="";
+            for(int i=0;i<result.size();i++) {
+                returnProducts += result.get(i).toJSON();
+                if(i!=result.size()-1)
+                    returnProducts +=",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Produkty\":["+returnProducts+"]}");
+            return"{\"Status\":\"success\", \"Produkty\":["+returnProducts+"]}";
+        } catch (EmptyResultDataAccessException e) {
+            return "{\"Status\":\"error\"}";
+        } catch (Exception e) {
+            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+    @GetMapping("/selectNewest")
+    public String selectNewest() throws SQLException {
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 and dataDodania>SYSDATE-30 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+        try {
+            System.out.println(sql);
+            List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
+                @Override
+                public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Produkt produkt = new Produkt(rs.getInt("ID"),rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"),rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
                     return produkt;
                 }
             });
@@ -283,7 +317,7 @@ public class Controller {
     @GetMapping("/updateProduct/{productId}/{newPrice}/{onPromotion}")
     public String updateProduct(@PathVariable("productId") String productId, @PathVariable("newPrice") String newPrice,
                                 @PathVariable("onPromotion") String onPromotion) throws SQLException {
-        String sql = "Update produkty set cena = '"+newPrice+"', onPromotion = '"+onPromotion+"' where ID = '"+productId+"'" ;
+        String sql = "Update produkty set cena = "+newPrice+", onPromotion = '"+onPromotion+"' where ID = '"+productId+"'" ;
         try {
             System.out.println(sql);
             jdbc.update(sql);
@@ -293,9 +327,55 @@ public class Controller {
         }
 
     }
-    @GetMapping("/deleteProduct/{productId}")
-    public String deleteProduct(@PathVariable("productId") String productId) throws SQLException {
-        String sql = "Update produkty set isActive = '0' where ID = '"+productId+"'" ;
+    // - delete products when payment will succesful
+    @GetMapping("/deleteProducts")
+    public String deleteProducts(HttpServletRequest request){
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        sessionData.getData().remove("collections");
+        redisTemplate.opsForValue().set(sessionId, sessionData);
+        return "Succes";
+    }
+
+    // delete selected item
+    @PostMapping("/deleteProduct")
+    public String deleteProduct(@RequestBody String item, HttpServletRequest request) throws SQLException {
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        sessionData.getData().get("collections").remove(item);
+        redisTemplate.opsForValue().set(sessionId, sessionData);
+        return "";
+    }
+    @GetMapping("/selectUserFirm/{userID}")
+    public String selectUserFirm(@PathVariable("userID") String userID) throws SQLException {
+        String sql = "Select * from Firmy where IDUzyt="+userID;
+        try {
+            System.out.println(sql);
+            List<Firma> result = jdbc.query(sql, new RowMapper<Firma>() {
+                @Override
+                public Firma mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Firma firma = new Firma(rs.getInt("ID"),rs.getInt("idUzyt"), rs.getString("nazwa"),
+                            rs.getString("telefon"));
+                    return firma;
+                }
+            });
+            String returnFirms ="";
+            for(int i=0;i<result.size();i++) {
+                returnFirms += result.get(i).toJSON();
+                if(i!=result.size()-1)
+                    returnFirms +=",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Firmy\":["+returnFirms+"]}");
+            return"{\"Status\":\"success\", \"Firmy\":["+returnFirms+"]}";
+        } catch (EmptyResultDataAccessException e) {
+            return "{\"Status\":\"error\"}";
+        } catch (Exception e) {
+            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+    @GetMapping("/insertUserFirm/{userID}/{firmName}/{telefon}")
+    public String insertFirm(@PathVariable("userID") String userID,@PathVariable("firmName") String firmName,@PathVariable("telefon") String telefon) throws SQLException {
+        String sql = "INSERT INTO firmy VALUES(firmyID.nextVal, '" + userID + "','" + firmName + "','" + telefon +"')";
         try {
             System.out.println(sql);
             jdbc.update(sql);
@@ -303,7 +383,145 @@ public class Controller {
         } catch (Exception ex) {
             return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
         }
-
     }
+    @GetMapping("/selectUserGyms/{firmID}")
+    public String selectUserGyms(@PathVariable("firmID") String firmID) throws SQLException {
+        String sql = "Select * from silownie  where IDFirmy="+firmID;
+        try {
+            System.out.println(sql);
+            List<Silownia> result = jdbc.query(sql, new RowMapper<Silownia>() {
+                @Override
+                public Silownia mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Silownia silownia = new Silownia(rs.getInt("ID"),rs.getInt("IDFirmy"), rs.getString("Nazwa"),
+                            rs.getString("Adres"), rs.getString("Telefon"));
+                    return silownia;
+                }
+            });
+            String returnS ="";
+            for(int i=0;i<result.size();i++) {
+                returnS += result.get(i).toJSON();
+                if(i!=result.size()-1)
+                    returnS +=",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Silownie\":["+returnS+"]}");
+            return"{\"Status\":\"success\", \"Silownie\":["+returnS+"]}";
+        } catch (Exception e) {
+            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+    @GetMapping("/insertUserGym/{firmID}/{gymName}/{adress}/{telefon}")
+    public String insertUserGym(@PathVariable("firmID") String firmID,@PathVariable("gymName") String gymName,@PathVariable("adress") String adress,@PathVariable("telefon") String telefon) throws SQLException {
+        String sql = "INSERT INTO silownie VALUES(silownieID.nextVal, '" + firmID + "','" + gymName + "','"+ adress + "','" + telefon +"')";
+        try {
+            System.out.println(sql);
+            jdbc.update(sql);
+            return "{\"Status\":\"success\"}";
+        } catch (Exception ex) {
+            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+        }
+    }
+    @PostMapping("/uploadPhoto")
+    public String uploadPhoto(@RequestParam("file") MultipartFile file,@RequestParam("productName") String productName, @RequestParam("productDescription") String productDescription, @RequestParam("productPrice") String productPrice, @RequestParam("selectedGroup") String selectedGroup)  {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String code ="";
+        Random random = new Random();
+        for(int i=0;i<5;i++)
+                    code=code+(characters.charAt(random.nextInt(characters.length())));
+
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String fileName = productName + "_" + currentDate +"_" + code + ".png";
+        String sql = "INSERT INTO produkty(ID, NAZWA, OPIS, ZDJECIE, CENA, dataDodania, IDGRUPY) VALUES(PRODUKTYID.nextVal, '"+productName+"','"+productDescription+"','"+fileName+"',"+productPrice+" , SYSDATE,'"+selectedGroup+"')" ;
+        if (file.isEmpty()) {
+            return "Plik nie został wybrany.";
+        }
+        try {
+            // Zapisz plik na serwerze
+            File destination = new File("D:/studia/studia/semestr 6/gymshop/zdjecia/" + fileName);
+            file.transferTo(destination);
+            try {
+                System.out.println(sql);
+                jdbc.update(sql);
+                return "{\"Status\":\"success\"}";
+            } catch (Exception ex) {
+                return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Wystąpił błąd podczas zapisywania pliku.";
+        }
+    }
+    @GetMapping("/deleteProduct/{productID}")
+    public String deleteProductAdmin(@PathVariable("productID") String productID) {
+
+        String sql = "Delete from produkty where id ="+productID;
+        jdbc.update(sql);
+        return "{\"Status\":\"Succes\"}";
+    }
+    @PostMapping("/selectFavourite")
+    public String selectFavourite(HttpServletRequest request) {
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        JSONObject Ujson = new JSONObject(sessionData.getData().get("user").get("id"));
+        String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
+                "WHERE P.isActive = 1 AND P.id IN (Select IDPROD from ULUBIONE  where IDUZYT=" + Ujson.get("id") + ") " +
+                "GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+        try {
+            System.out.println(sql);
+            List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
+                @Override
+                public Produkt mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Produkt produkt = new Produkt(rs.getInt("ID"), rs.getString("nazwa"), rs.getString("Opis"), rs.getString("Zdjecie"),
+                            rs.getDouble("Cena"), rs.getInt("IDGrupy"), rs.getInt("isActive"), rs.getInt("onPromotion"), rs.getDouble("Ocena"));
+                    return produkt;
+                }
+            });
+            String returnProducts = "";
+            for (int i = 0; i < result.size(); i++) {
+                returnProducts += result.get(i).toJSON();
+                if (i != result.size() - 1)
+                    returnProducts += ",";
+            }
+            System.out.println("{\"Status\":\"success\", \"Produkty\":[" + returnProducts + "]}");
+            return "{\"Status\":\"success\", \"Produkty\":[" + returnProducts + "]}";
+        } catch (EmptyResultDataAccessException e) {
+            return "{\"Status\":\"error\"}";
+        } catch (Exception e) {
+            return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    @PostMapping("/addComplain")
+    @ResponseBody
+    public String addComplain(@RequestBody String complain, HttpServletRequest request) {
+        return "1";
+    }
+    @PostMapping("/addFavourite")
+    @ResponseBody
+    public String addUserFavourite(@RequestBody String item, HttpServletRequest request) {
+        JSONObject json = new JSONObject(item);
+        String sessionId = request.getHeader("SESSIONID");
+        SessionData sessionData = redisTemplate.opsForValue().get(sessionId);
+        JSONObject Ujson = new JSONObject(sessionData.getData().get("user").get("id"));
+        String sqlCheck = "SELECT COUNT(*) FROM ULUBIONE WHERE IDUZYT = " + Ujson.get("id") + " AND IDPROD = " + json.get("id");
+        try {
+            System.out.println(sqlCheck);
+            int count = jdbc.queryForObject(sqlCheck, Integer.class);
+            if(count>0) {
+                String sql = "DELETE FROM ULUBIONE  WHERE IDPROD ='" + json.get("id") + "' AND IDUZYT ='" + Ujson.get("id") + "'";
+                System.out.println(sql);
+                jdbc.update(sql);
+                return "remove";
+            }
+            else{
+                String sql = "INSERT INTO ULUBIONE  VALUES ('" + json.get("id") + "','" + Ujson.get("id") + "')";
+                System.out.println(sql);
+                jdbc.update(sql);
+                return "add";
+            }
+        } catch (Exception ex) {
+            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
+        }
+    }
+
 }
 
