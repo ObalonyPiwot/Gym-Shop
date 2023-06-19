@@ -13,6 +13,9 @@ const History = (props) => {
     const [detailBlog, setDetailBlog] = useState({});
     const [action, setAction] = useState(0);
 
+    function setNewBlogs(data){
+        setBlogs(data);
+    }
     useEffect(() => {
         fetch('http://localhost/api/payment/getTransactionHistory', {
             method: 'POST',
@@ -34,7 +37,8 @@ const History = (props) => {
                     ilosc: value.ilosc,
                     czySukces: value.czySukces,
                 }));
-                setBlogs(transformed);
+                setNewBlogs(transformed);
+                console.log(transformed);
             })
     }, [])
 
