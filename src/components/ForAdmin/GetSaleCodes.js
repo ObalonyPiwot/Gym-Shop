@@ -54,7 +54,7 @@ const GetSaleCodes = (props) => {
                             {blog.dataWaznosci}
                           </td>
                           <td>
-                            {blog.czySukces === 'T' ? "Zużyty" : "Nie Zużyty"}
+                            {blog.czyUzyty == 'T' ? "Zużyty" : "Nie Zużyty"}
                           </td>
                         </tr>
                       )
@@ -66,7 +66,6 @@ const GetSaleCodes = (props) => {
           </div>
         </div>
       </div>
-      {/* {kody} */}
       <button onClick={() => props.setAction(0)}>Cofnij</button>
     </>
   );

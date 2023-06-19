@@ -111,7 +111,7 @@ public class Controller {
 
     @GetMapping("/selectSaleCodes")
     public String selectSaleCodes() throws SQLException {
-        String sql = "Select * from KODYRABATOWE where czyuzyty='F' and (Select sysdate from dual)<datawaznosci";
+        String sql = "Select * from KODYRABATOWE ";
         try {
             System.out.println(sql);
             List<KodRabatowy> result = jdbc.query(sql, new RowMapper<KodRabatowy>() {
