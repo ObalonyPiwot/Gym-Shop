@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { getCookie, checkCookieExists } from "../../../CookieFunction";
 import { useAlert } from "react-alert";
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
+
 import exit from "../../../assets/exit.png";
 import { useNavigate } from 'react-router-dom';
 import './Payment-Style.css';
