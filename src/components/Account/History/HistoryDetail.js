@@ -21,19 +21,60 @@ const HistoryDetail = ({ blog, changeState, history }) => {
     //     }));
     //     setBlogs(transformed);
     // }, [])
-    const togglePayment = (data) =>{
+
+    useEffect(() => {
+        const fetchPhotos = () => {
+            const fetchRequests = items.map((item, index) => {
+                return fetch('http://localhost/getPhoto', {
+                    method: 'POST',
+                    body: item.photoName.replace('"', ''),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(photoResponse => photoResponse.blob())
+                    .then(photoData => {
+                        if (photoData) {
+                            const photoUrl = URL.createObjectURL(photoData);
+                            return {
+                                ...item,
+                                photoUrl: photoUrl
+                            };
+                        } else {
+                            return item;
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Error fetching photo:", error);
+                        return item;
+                    });
+            });
+
+            Promise.all(fetchRequests)
+                .then(productListWithPhotos => {
+                    setItems(productListWithPhotos);
+                })
+                .catch(error => {
+                    console.log("Error fetching photos:", error);
+                });
+        };
+
+        fetchPhotos();
+    }, []);
+
+    const togglePayment = (data) => {
         setPayment(data);
     }
-    
+
     let okno;
-    if(showPayment){
-       okno = <PaymentPreview item={blog} closePreview={togglePayment}/>
+    if (showPayment) {
+        okno = <PaymentPreview item={blog} closePreview={togglePayment} />
     } else {
-       okno = <></>;
+        okno = <></>;
     }
 
-   
-    
+
+
     return (
         <div>
             {okno}
@@ -69,7 +110,7 @@ const HistoryDetail = ({ blog, changeState, history }) => {
                                             {blogs.id}
                                         </td>
                                         <td>
-                                            {blogs.cena}
+                                            {blogs.cena} zł
                                         </td>
                                         <td>
                                             {blogs.data}
@@ -103,13 +144,15 @@ const HistoryDetail = ({ blog, changeState, history }) => {
 
                                         return (
                                             <tr key={index} className='bodyTr'>
-                                                <td>
-                                                    <div className="image">
-                                                        <img src={blog.photo} alt={blog.title} />
-                                                    </div>
-                                                    <div className="text">
-                                                        <div className="top">
-                                                            <p>{blog.title}</p>
+                                                <td className='image-section'>
+                                                    <div className='presentSection'>
+                                                        <div className="image">
+                                                            <img src={blog.photoUrl} alt={blog.title} />
+                                                        </div>
+                                                        <div className="historyText">
+                                                            <div className="top">
+                                                                <p>{blog.title}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>

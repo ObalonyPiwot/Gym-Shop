@@ -14,6 +14,7 @@
 
 .bodyTr{
     color: #be9e44;
+    width: 50%;
 }
 
 .link{
@@ -37,4 +38,14 @@
 .backButton a:hover{
     color: #c0aa70;
     text-decoration: none;
+}
+
+.image-section {
+    width: 250px;
+}
+
+.presentSection{
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }

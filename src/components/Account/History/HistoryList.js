@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 
 const HistoryList = ({ blogs, changeState }) => {
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log(blogs);
     }, [])
 
@@ -14,7 +14,7 @@ const HistoryList = ({ blogs, changeState }) => {
 
     return (
         <div className='CartPreview'>
-             <table className='historyPreview'>
+            <table className='historyPreview'>
                 <thead className='tableHistory'>
                     <tr className='historyHead'>
                         <th>NumerZamówienia</th>
@@ -29,23 +29,23 @@ const HistoryList = ({ blogs, changeState }) => {
 
                         return (
                             <tr key={index} className='bodyTr'>
-                            <td>
-                                {blog.id}
-                            </td>
-                            <td>
-                                {blog.data}
-                            </td>
-                            <td>
-                                {blog.cena}
-                            </td>
-                            <td>
-                                {blog.czySukces === 'T'? "Zapłacono" : "Nie Zapłacono"}
-                            </td>
-                            <td>
-                                <a href='#more' className='link' onClick={() => moveToDetail(blog)}>
-                                    SZCZEGÓŁY
-                                </a>
-                            </td>
+                                <td>
+                                    {blog.id}
+                                </td>
+                                <td>
+                                    {blog.data}
+                                </td>
+                                <td>
+                                    {blog.cena}
+                                </td>
+                                <td>
+                                    {blog.czySukces === 'T' ? "Zapłacono" : "Nie Zapłacono"}
+                                </td>
+                                <td>
+                                    <a href='#more' className='link' onClick={() => moveToDetail(blog)}>
+                                        SZCZEGÓŁY
+                                    </a>
+                                </td>
                             </tr>
                         )
                     })}
