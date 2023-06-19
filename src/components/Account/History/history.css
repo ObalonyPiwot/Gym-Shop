@@ -1,0 +1,51 @@
+.CartPreview{
+    width: auto !important;
+}
+
+.historyPreview{
+    width: 100%;
+
+}
+
+.tableHistory{
+    text-align: center;
+}
+
+
+.bodyTr{
+    color: #be9e44;
+    width: 50%;
+}
+
+.link{
+    text-decoration: none;
+    color: #be9e44;
+}
+
+.link:hover{
+    color: #bca66a;
+}
+
+.backButton{
+    margin-bottom: 25px;
+}
+
+.backButton a{
+    text-decoration: underline;
+    color: #be9e44;
+}
+
+.backButton a:hover{
+    color: #c0aa70;
+    text-decoration: none;
+}
+
+.image-section {
+    width: 250px;
+}
+
+.presentSection{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
