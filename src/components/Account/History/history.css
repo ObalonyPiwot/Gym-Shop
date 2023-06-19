@@ -11,6 +11,11 @@
     text-align: center;
 }
 
+
+.bodyTr{
+    color: #be9e44;
+}
+
 .link{
     text-decoration: none;
     color: #be9e44;
@@ -18,4 +23,18 @@
 
 .link:hover{
     color: #bca66a;
+}
+
+.backButton{
+    margin-bottom: 25px;
+}
+
+.backButton a{
+    text-decoration: underline;
+    color: #be9e44;
+}
+
+.backButton a:hover{
+    color: #c0aa70;
+    text-decoration: none;
 }

@@ -60,7 +60,11 @@ const KoszykZawartosc = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleExtendedBlog = (props) =>{
+        setBlogs(props);
+        setCookie("USER_CART", JSON.stringify(props), 1);
 
+    }
 
     let totalCena = blogs.reduce((total, blog) => {
         let cena = typeof blog.cena === 'string' ? blog.cena : blog.cena.toString();
@@ -80,7 +84,7 @@ const KoszykZawartosc = (props) => {
                             <h2>KOSZYK</h2>
                         </div>
                         <div className='list'>
-                            <CartList blogs={blogs} handleBlogs={setBlogs} />
+                            <CartList blogs={blogs} handleBlogs={handleExtendedBlog} />
                         </div>
                     </div>
                 </div>

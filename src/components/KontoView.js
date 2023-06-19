@@ -14,7 +14,6 @@ const KontoView = (props) => {
     const [action, setAction] = useState(0);
 
     useEffect(() =>{
-        console.log(JSON.stringify(props.user));
         setCookie("USER_DATA", JSON.stringify(props.user), 1);
     })
     return ( 

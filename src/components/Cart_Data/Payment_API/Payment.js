@@ -233,26 +233,6 @@ const Payment = (props) => {
                 </div>
 
             </div>
-
-
-
-
-
-
-
-            {/* <h1>Platnosc</h1>
-            <StripeCheckout
-                token={this.handleToken}
-                stripeKey="pk_test_51MzlNHGpf7NnxYjCcvT588Hm1PqwfRP9r2oX1uNrzoiH47oz0nOuFNOV28meAcwfWtQIg4FsUChoIdOOH7yIzNsH00PF7xfScF"
-                amount={1000} // kwota w centach
-                currency="PLN"
-                name="GymShop"
-                description="Opis produktu"
-                image="https://placekitten.com/100/100"
-            >
-                <button>Zapłać</button>
-                <button onClick={() => props.onFormSwitch('cart')}>Cofnij do koszyka</button>
-            </StripeCheckout> */}
         </div>
     );
 }

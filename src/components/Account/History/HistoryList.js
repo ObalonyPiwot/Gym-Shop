@@ -1,18 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
-import { useAlert } from 'react-alert';
 import './history.css'
 import { useEffect } from 'react';
 
-const HistoryList = ({ blogs }) => {
+const HistoryList = ({ blogs, changeState }) => {
 
     useEffect(() =>{
         console.log(blogs);
     }, [])
 
+    const moveToDetail = (par) => changeState(par);
+
+
     return (
         <div className='CartPreview'>
-            <table className='historyPreview'>
+             <table className='historyPreview'>
                 <thead className='tableHistory'>
                     <tr className='historyHead'>
                         <th>NumerZamówienia</th>
@@ -26,7 +28,7 @@ const HistoryList = ({ blogs }) => {
                     {blogs.map((blog, index) => {
 
                         return (
-                            <tr key={index}>
+                            <tr key={index} className='bodyTr'>
                             <td>
                                 {blog.id}
                             </td>
@@ -37,10 +39,10 @@ const HistoryList = ({ blogs }) => {
                                 {blog.cena}
                             </td>
                             <td>
-                                {blog.czySukces == 'T'? "Zapłacono" : "NieZapłacono"}
+                                {blog.czySukces === 'T'? "Zapłacono" : "Nie Zapłacono"}
                             </td>
                             <td>
-                                <a href='#more' className='link'>
+                                <a href='#more' className='link' onClick={() => moveToDetail(blog)}>
                                     SZCZEGÓŁY
                                 </a>
                             </td>

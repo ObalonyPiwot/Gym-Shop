@@ -114,3 +114,23 @@ export const getDataTransaction = () => {
             console.log(result);
         })
 }
+
+/*
+* Function to call request that insert data in transaction table
+*/
+export const updateDataTransaction = (succes, id) => {
+    fetch('http://localhost/api/payment/updateDataTransaction', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            succes: succes,
+            id: id,
+        })
+    })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => alert(error.message));
+}

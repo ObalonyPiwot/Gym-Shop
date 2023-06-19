@@ -26,9 +26,7 @@ public class PaymentGatewayController {
     @PostMapping("/charge")
     public Charge chargeCard(@RequestHeader(value="token") String token, @RequestHeader(value="amount") Double amount, @RequestBody String bodyData) throws Exception {
         JSONObject json = new JSONObject(bodyData);
-        System.out.println("TEEEST" + (json));
         JSONObject userData = new JSONObject(json.get("userData").toString());
-        System.out.println("TEEESTOOOWWWYYYYY" + (userData));
         return this.stripeClient.chargeNewCard(token, amount);
     }
 
@@ -68,6 +66,19 @@ public class PaymentGatewayController {
             return "{\"Status\":\"error\"}";
         } catch (Exception e) {
             return "{\"Status\":\"error\",\"Message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    @PostMapping("/updateDataTransaction")
+    public String updateDataTransaction(@RequestBody String bodyData) throws Exception {
+        JSONObject json = new JSONObject(bodyData);
+        String sql = "Update transakcje set CZYSUKCES = '"+json.get("succes")+"' where ID = "+json.get("id") ;
+        try {
+            System.out.println(sql);
+            jdbc.update(sql);
+            return "{\"Status\":\"success\"}";
+        } catch (Exception ex) {
+            return "{\"Status\":\"error\",\"Message\":\"" + ex.getMessage() + "\"}";
         }
     }
 }

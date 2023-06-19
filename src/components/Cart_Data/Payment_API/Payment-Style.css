@@ -109,3 +109,7 @@ h2{
 .btnPromo, .promo-input{
     margin-top: 0 !important;
 }
+.inspectBlog{
+    background-color: rgba(0, 0, 0, 0) !important;
+    height: auto !important;
+}
