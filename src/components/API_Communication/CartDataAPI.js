@@ -77,6 +77,7 @@ export const deleteSpecificDataFromSession = (props) => {
 * Function to call request that insert data in transaction table
 */
 export const insertDataTransaction = (succes, amount, total) => {
+    console.log(getCookie("USER_DATA"));
     fetch('http://localhost/api/payment/insertDatabase', {
         method: 'POST',
         headers: {

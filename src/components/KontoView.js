@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import zdjUzyt from "../zdj/zdjUzytkownika.png";
+import { useState,useEffect } from 'react';
 import ChangeData from "../components/Account/ChangeData";
 import History from "../components/Account/History";
 import Complaints from "../components/Account/Complaints";
 import AdminView from "../components/Account/AdminView";
 import Firms from "../components/Account/Firms";
+import { getCookie, setCookie } from "../CookieFunction";
 
 const KontoView = (props) => {
     const [user, setUser] = useState(props.user);
     const [action, setAction] = useState(0);
+    useEffect(() =>{
+        setCookie("USER_DATA", JSON.stringify(props.user), 1);
+    })
     return ( 
         <>
         {action===0 && (
             <div className='content2'>
                 <div className='logging'>
-                    <div className='profilowe'>
-                        <img src={zdjUzyt} alt="Profile" />
-                    </div>
                     <label htmlFor='imie'>Imie</label>
                     <input value={user.imie} disabled id='imie' name='imie'/>
                     <label htmlFor='nazwisko'>Nazwisko</label>

@@ -167,14 +167,13 @@ describe('Navbar', () => {
       render(<GetSaleCodes />);
   
       // Oczekiwanie na pobranie danych
-      await screen.findByText('Kod: KOD1');
+      await screen.findByText('KOD1');
   
-      expect(screen.getByText('Kod: KOD1')).toBeInTheDocument();
-      expect(screen.getByText('Rabat: 10 Data ważności: 2023-06-30 Czy użyty: F')).toBeInTheDocument();
-      expect(screen.getByText('Kod: KOD2')).toBeInTheDocument();
-      expect(screen.getByText('Rabat: 20 Data ważności: 2023-07-31 Czy użyty: T')).toBeInTheDocument();
-      expect(screen.getByText('Kod: KOD3')).toBeInTheDocument();
-      expect(screen.getByText('Rabat: 30 Data ważności: 2023-08-31 Czy użyty: F')).toBeInTheDocument();
+      expect(screen.getByText('KOD1')).toBeInTheDocument();
+      expect(screen.getByText('KOD2')).toBeInTheDocument();
+      expect(screen.getByText('2023-07-31')).toBeInTheDocument();
+      expect(screen.getByText('KOD3')).toBeInTheDocument();
+      expect(screen.getByText('Zużyty')).toBeInTheDocument();
     });
   });
 

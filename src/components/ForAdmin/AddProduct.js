@@ -79,8 +79,9 @@ const AddProduct = (props) => {
     method: 'POST',
     body: formData
   })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(result => {
+      console.log(result);
       if (result.Status === 'success')
         alert("Dodano produkt");
     })

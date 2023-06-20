@@ -62,9 +62,6 @@ const SetPromotion = (props) => {
                     setValue('');
                     setProductPrice('');
                     setOnPromotion(0);
-                    setTimeout(() => {
-                      alert.removeAll();
-                  }, 2000);
               }
           });
       };

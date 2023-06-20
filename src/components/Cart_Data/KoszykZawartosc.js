@@ -30,7 +30,6 @@ const KoszykZawartosc = (props) => {
                 const transformed = Object.entries(json.collections).map(([key, value]) => ({
                     title: value.title,
                     cena: value.cena,
-                    body: value.body,
                     author: value.author,
                     id: value.id,
                     photoName: value.photoName,

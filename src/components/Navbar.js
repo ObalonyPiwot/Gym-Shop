@@ -2,26 +2,48 @@ import logo from "../assets/logo2.png";
 import { useEffect } from "react";
 import { getCookie, checkCookieExists } from "../CookieFunction";
 import { useState } from "react";
-import Autocomplete from 'react-autocomplete';
-import PreviewBlog from '../components/PreviewBlog';
+
 const Navbar = () => {
 
-
-    function _fixJsonString(jsonString) {
-        jsonString = jsonString.trim().slice(1, -1);
-      
-        jsonString = jsonString.replace(/=/g, ':');
-      
-        jsonString = jsonString.replace(/'/g, '"');
-      
-        jsonString = jsonString.replace(/,(\s*})/g, '$1');
-      
-        jsonString = '{' + jsonString + '}';
-      
-        return jsonString;
-      }
-
     const [total, setTotal] = useState(0);
+    useEffect(() => {
+        if (checkCookieExists("SESSION-ID")) {
+            const sessionCookie = getCookie("SESSION-ID");
+            fetch('http://localhost/getDataFromSession', {
+                method: 'GET',
+                headers: {
+                    'SESSIONID': sessionCookie,
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.text())
+                .then(result => {
+                    try {
+                        const correctedString = result.replace(/([a-zA-Z0-9_\s]+)\s*=/g, '"$1": ')
+                            .replace(/(['"])?([a-zA-Z0-9_\s]+)(['"])?:/g, '"$2": ')
+                            .replace(/'/g, '"');
+                        const json = JSON.parse(correctedString);
+                        const transformed = Object.entries(json.collections).map(([key, value]) => ({
+                            photo: value.photo,
+                            title: value.title,
+                            cena: value.cena,
+                            body: value.body,
+                            author: value.author,
+                            id: value.id,
+                            count: parseInt(value.count, 10)
+                        }));
+                        const totalLocal = transformed.reduce((acc, curr) => acc + curr.count, 0);
+                        setTotal(totalLocal);
+                    } catch (error) {
+                        console.log('Error parsing JSON:', error);
+                    }
+                })
+                .catch(error => console.log('Fetch error:', error));
+        }
+
+
+
+    }, []);
 
     return (
         <nav className="navbar">

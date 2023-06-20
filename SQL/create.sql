@@ -12,16 +12,10 @@ drop table produkty;
 drop sequence produktyID;
 drop table reklamacje;
 drop sequence reklamacjeID;
-drop table serwisy;
-drop sequence serwisyID;
 drop table silownie;
 drop sequence silownieID;
 drop table transakcje;
 drop sequence transakcjeID;
-drop table daneTransakcji;
-drop sequence daneTransakcjiID;
-drop table koszyk;
-drop sequence koszykID;
 drop table ulubione;
 drop sequence ulubioneID;
 drop table umowy;
@@ -45,7 +39,6 @@ create table produkty(
     Opis NVARCHAR2(1024),
     Zdjecie NVARCHAR2(200),
     Cena FLOAT,
-    ostCena FLOAT default 0,
     dataDodania Date,
     IDGRUPY numeric,
     isActive numeric default 1,
@@ -54,21 +47,16 @@ create table produkty(
 
 create table transakcje(
     ID numeric primary key,
-    IDProd numeric,
     IDUzyt numeric,
+    Dane NVARCHAR2(1024),
     Data DATE,
-    Cena float
-);
-create table daneTransakcji(
-    ID numeric primary key,
-    IDTransakcji numeric,
+    Cena float,
+    ilosc numeric,
     czySukces char(1) default 'F',
-    CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
+    
+        CONSTRAINT czySukcesCheck CHECK (czySukces IN ('F','T'))
 );
-create table koszyk(
-    IDTrans numeric,
-    IDProd numeric
-);
+
 create table reklamacje(
     ID numeric primary key,
     IDProd numeric,
@@ -83,7 +71,6 @@ create table oceny(
     IDProd numeric,
     IDUzyt numeric,
     Data DATE,
-    Opis NVARCHAR2(500),
     Ocena FLOAT
 );
 
@@ -136,18 +123,8 @@ create table umowy (
     Cena FLOAT
 );  
 
-create table serwisy (
-    ID numeric primary key,
-    IDUmowy numeric,
-    Data DATE,
-    Opis NVARCHAR2(500)
-); 
 
   Create sequence uzytkownikID
-    minvalue 0
-    start with 1
-    increment by 1;
-  Create sequence serwisyID
     minvalue 0
     start with 1
     increment by 1;
@@ -189,17 +166,9 @@ create table serwisy (
     increment by 1;
       Create sequence transakcjeID
     minvalue 0
-    start with 1
+    start with 0
     increment by 1;
       Create sequence produktyID
     minvalue 0
-    start with 1
-    increment by 1;
-          Create sequence daneTransakcjiID
-    minvalue 0
-    start with 1
-    increment by 1;
-          Create sequence koszykID
-    minvalue 0
-    start with 1
+    start with 500
     increment by 1;
