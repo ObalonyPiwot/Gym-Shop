@@ -34,6 +34,7 @@ public class PaymentGatewayController {
     @PostMapping("/insertDatabase")
     public String insertDatabased(@RequestBody String bodyData) throws Exception {
         JSONObject json = new JSONObject(bodyData);
+        System.out.println(json);
         JSONObject userData = new JSONObject(json.get("userData").toString());
         System.out.println(userData);
         String sql = " INSERT INTO TRANSAKCJE VALUES (transakcjeID.nextVal, '"+userData.get("id")+"', '"+json.get("userCart").toString()+"', sysdate , "+json.get("amount")+", '"+json.get("total")+"','"+json.get("succes") +"' )";

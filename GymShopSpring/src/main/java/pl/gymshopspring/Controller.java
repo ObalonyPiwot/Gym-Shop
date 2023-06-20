@@ -195,7 +195,7 @@ public class Controller {
     @GetMapping("/selectProducts/{selectedGroup}")
     public ResponseEntity<String> selectProducts(@PathVariable("selectedGroup") String selectedGroup) throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 and IDGrupy =" + selectedGroup + " GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 and IDGrupy =" + selectedGroup + " GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -229,7 +229,7 @@ public class Controller {
     @GetMapping("/selectProductsForSale")
     public ResponseEntity<String> selectProductsForSale() throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 and onPromotion=1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 and onPromotion=1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -263,7 +263,7 @@ public class Controller {
     @GetMapping("/selectProducts")
     public ResponseEntity<String> selectProducts() throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -297,7 +297,7 @@ public class Controller {
     @GetMapping("/selectProduct/{id}")
     public ResponseEntity<String> selectProduct(@PathVariable("id") String id) throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 AND P.id = " + id + " GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 AND P.id = " + id + " GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             Produkt result = jdbc.queryForObject(sql, new RowMapper<Produkt>() {
@@ -327,7 +327,7 @@ public class Controller {
     @GetMapping("/selectNewest")
     public ResponseEntity<String> selectNewest() throws SQLException {
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
-                "WHERE P.isActive = 1 and dataDodania>SYSDATE-30 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "WHERE P.isActive = 1 and dataDodania>SYSDATE-30 GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {
@@ -544,7 +544,7 @@ public class Controller {
         JSONObject Ujson = new JSONObject(sessionData.getData().get("user").get("id"));
         String sql = "SELECT P.*, COALESCE(AVG(O.ocena), 0) AS Ocena FROM Produkty P LEFT JOIN Oceny O ON P.id = O.idProd " +
                 "WHERE P.isActive = 1 AND P.id IN (Select IDPROD from ULUBIONE  where IDUZYT=" + Ujson.get("id") + ") " +
-                "GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.OSTCENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
+                "GROUP BY P.ID,P.NAZWA,P.OPIS,P.ZDJECIE,P.CENA,P.DATADODANIA,P.IDGRUPY,P.ISACTIVE,P.ONPROMOTION";
         try {
             System.out.println(sql);
             List<Produkt> result = jdbc.query(sql, new RowMapper<Produkt>() {

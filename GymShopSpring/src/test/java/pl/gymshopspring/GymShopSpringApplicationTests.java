@@ -88,7 +88,7 @@ class GymShopSpringApplicationTests {
 		controller.jdbc.update("INSERT INTO produkty(ID, NAZWA, OPIS, ZDJECIE, CENA, dataDodania, IDGRUPY) " +
 				"VALUES(PRODUKTYID.nextVal, 'test3','test3','test3_2023-06-11_EGR58.png',23.23, SYSDATE,'1')");
 
-		ResponseEntity<String> response = controller.selectProducts();;
+		ResponseEntity<String> response = controller.selectProducts();
 		JSONObject jsonResponse = new JSONObject(response.getBody());
 		JSONArray userJsonArray = jsonResponse.getJSONArray("Produkty");
 		JSONObject userJson = userJsonArray.getJSONObject(0);
@@ -201,10 +201,9 @@ class GymShopSpringApplicationTests {
 	@SneakyThrows
 	@Test
 	public void testUmowy(){
-
 		controller.jdbc.update("DELETE FROM Umowy");
-		controller.jdbc.update("DELETE FROM Uzytkownik");
-		controller.jdbc.update("INSERT INTO uzytkownik VALUES (1, 'Logan', 'Carta', 'Uzytkownik', '6ffcfcc7'," +
+		controller.jdbc.update("DELETE FROM Uzytkownik Where id = 0");
+		controller.jdbc.update("INSERT INTO uzytkownik VALUES (0, 'Logan', 'Carta', 'Uzytkownik', '6ffcfcc7'," +
 				" 'nuebi@titunir.kp', '155038985')");
 		controller.jdbc.update("DELETE FROM Firmy");
 		controller.insertFirm("1","Nazwa","111111111");
@@ -228,7 +227,7 @@ class GymShopSpringApplicationTests {
 		Assertions.assertEquals("2024-06-30 00:00:00", umowa.getString("dataZakonczenia"), "Błąd dataZakonczenia.");
 		Assertions.assertEquals("opis opis", umowa.getString("opis"), "Błąd opis.");
 		Assertions.assertEquals("1000", umowa.getString("cena"), "Błąd cena.");
-		controller.jdbc.update("DELETE FROM UZYTKOWNIK");
+		controller.jdbc.update("DELETE FROM Uzytkownik Where id = 0");
 		controller.jdbc.update("DELETE FROM Firmy");
 		controller.jdbc.update("DELETE FROM SILOWNIE");
 		controller.jdbc.update("DELETE FROM Umowy");
