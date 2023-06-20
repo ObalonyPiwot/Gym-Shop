@@ -38,15 +38,6 @@ public class Controller {
     @Autowired
     public JdbcTemplate jdbc;
 
-    @GetMapping("/test")
-    public String registration() throws SQLException {
-        String sql = "Select login from uzytkownik where ID = 1";
-        String data = (String) jdbc.queryForObject(sql, new Object[]{}, String.class);
-        System.out.println("Wykonano");
-        return "{\"Status\":\"" + data + "\"}";
-    }
-
-
     //HOME - ZAMOWIENIE
     @PostMapping("/Cart/setRedisData")
     @ResponseBody
@@ -518,7 +509,6 @@ public class Controller {
             @PathVariable("description") String description,
             @PathVariable("price") String price
     ) {
-        System.out.println(startDate);
         String sql = "INSERT INTO umowy VALUES(umowyID.nextVal, '" + idGym + "','" + startDate + "','" + endDate + "','" + description + "' , " + price + ")";
         System.out.println(sql);
         jdbc.update(sql);

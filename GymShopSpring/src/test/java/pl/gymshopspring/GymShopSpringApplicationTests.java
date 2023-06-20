@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -195,5 +196,41 @@ class GymShopSpringApplicationTests {
 		controller.jdbc.update("DELETE FROM UZYTKOWNIK");
 		controller.jdbc.update("DELETE FROM Firmy");
 		controller.jdbc.update("DELETE FROM SILOWNIE");
+	}
+
+	@SneakyThrows
+	@Test
+	public void testUmowy(){
+
+		controller.jdbc.update("DELETE FROM Umowy");
+		controller.jdbc.update("DELETE FROM Uzytkownik");
+		controller.jdbc.update("INSERT INTO uzytkownik VALUES (1, 'Logan', 'Carta', 'Uzytkownik', '6ffcfcc7'," +
+				" 'nuebi@titunir.kp', '155038985')");
+		controller.jdbc.update("DELETE FROM Firmy");
+		controller.insertFirm("1","Nazwa","111111111");
+		controller.jdbc.update("DELETE FROM SILOWNIE");
+		controller.insertUserGym("1","Gym",";)","123412312");
+
+		controller.makeOrder(
+				"1",
+				"23/06/30",
+				"24/06/30",
+				"opis opis",
+				"1000"
+		);
+		String response = controller.ChceckOrders();
+		JSONObject jsonResponse = new JSONObject(response);
+		JSONArray JsonArray = jsonResponse.getJSONArray("Umowy");
+		JSONObject umowa = JsonArray.getJSONObject(0);
+		Assertions.assertEquals(1, JsonArray.length(), "Błąd ilosc Umów.");
+		Assertions.assertEquals("Gym", umowa.getString("nazwa"), "Błąd nazwa.");
+		Assertions.assertEquals("2023-06-30 00:00:00", umowa.getString("dataZawarcia"), "Błąd dataZawarcia.");
+		Assertions.assertEquals("2024-06-30 00:00:00", umowa.getString("dataZakonczenia"), "Błąd dataZakonczenia.");
+		Assertions.assertEquals("opis opis", umowa.getString("opis"), "Błąd opis.");
+		Assertions.assertEquals("1000", umowa.getString("cena"), "Błąd cena.");
+		controller.jdbc.update("DELETE FROM UZYTKOWNIK");
+		controller.jdbc.update("DELETE FROM Firmy");
+		controller.jdbc.update("DELETE FROM SILOWNIE");
+		controller.jdbc.update("DELETE FROM Umowy");
 	}
 }
